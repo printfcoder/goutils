@@ -233,3 +233,10 @@ func TestStripEnd(t *testing.T) {
 
 	t.Log(out)
 }
+
+func TestStripWithChar(t *testing.T) {
+	out := stringutils.StripWithChar("  abcyx", "xyz")
+	if out != "  abc" {
+		t.Error(out)
+	}
+}

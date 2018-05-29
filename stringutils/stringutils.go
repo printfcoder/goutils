@@ -194,6 +194,20 @@ func Strip(str string) string {
 	return ""
 }
 
+// StripWithChar strips any of a set of characters from the start and end of a String.
+// This is similar to trim but allows the characters
+// to be stripped to be controlled
+// stringUtils.Strip("", *)            = ""
+// stringUtils.Strip("  abcyx", "xyz") = "  abc"
+func StripWithChar(str, stripChars string) string {
+	if IsEmpty(str) {
+		return str
+	}
+
+	str = StripStart(str, stripChars)
+	return StripEnd(str, stripChars)
+}
+
 // StripStart strips any of a set of characters from the start of a String.
 // stringutils.StripStart("", *)            = ""
 // stringutils.StripStart("abc", "")        = "abc"
