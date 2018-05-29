@@ -240,3 +240,41 @@ func TestStripWithChar(t *testing.T) {
 		t.Error(out)
 	}
 }
+
+func TestStrip(t *testing.T) {
+
+	out := stringutils.Strip("")
+	if out != "" {
+		t.Error(out)
+	}
+
+	out = stringutils.Strip("   ")
+	if out != "" {
+		t.Error(out)
+	}
+
+	out = stringutils.Strip("abc")
+	if out != "abc" {
+		t.Error(out)
+	}
+
+	out = stringutils.Strip("  abc")
+	if out != "abc" {
+		t.Error(out)
+	}
+
+	out = stringutils.Strip("abc  ")
+	if out != "abc" {
+		t.Error(out)
+	}
+
+	out = stringutils.Strip(" abc ")
+	if out != "abc" {
+		t.Error(out)
+	}
+
+	out = stringutils.Strip(" ab c ")
+	if out != "ab c" {
+		t.Error(out)
+	}
+}
