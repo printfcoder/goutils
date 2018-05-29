@@ -190,15 +190,22 @@ func SubStringBetween(str string, beginIndex, endIndex int) (ret string, err err
 // region
 
 // Strip strips whitespace from the start and end of a String
+// stringUtils.Strip("")       = ""
+// stringUtils.Strip("   ")    = ""
+// stringUtils.Strip("abc")    = "abc"
+// stringUtils.Strip("  abc")  = "abc"
+// stringUtils.Strip("abc  ")  = "abc"
+// stringUtils.Strip(" abc ")  = "abc"
+// stringUtils.Strip(" ab c ") = "ab c"
 func Strip(str string) string {
-	return ""
+	return StripWithChar(str, " ")
 }
 
 // StripWithChar strips any of a set of characters from the start and end of a String.
 // This is similar to trim but allows the characters
 // to be stripped to be controlled
-// stringUtils.Strip("", *)            = ""
-// stringUtils.Strip("  abcyx", "xyz") = "  abc"
+// stringUtils.StripWithChar("", *)            = ""
+// stringUtils.StripWithChar("  abcyx", "xyz") = "  abc"
 func StripWithChar(str, stripChars string) string {
 	if IsEmpty(str) {
 		return str
@@ -270,6 +277,28 @@ func StripEnd(str, stripChars string) string {
 }
 
 // endregion
+
+// region Equals
+
+// EqualsIgnoreCase compares two CharSequences, returning true if they represent
+// equal sequences of characters, ignoring case.
+func EqualsIgnoreCase(str1, str2 string) bool {
+	if str1 == str2 {
+		return true
+	} else if len(str1) != len(str2) {
+		return false
+	} else {
+		return RegionMatches(str1, true, 0, str2, 0, len(str2))
+	}
+}
+
+// endregion
+
+// RegionMatches tests if two string regions are equal.
+func RegionMatches(cs string, ignoreCase bool, toffset int,
+	other string, ooffset int, len int) bool {
+	return false
+}
 
 // CharAt returns the char value at the specified index.
 func CharAt(str string, index int) (ret string, err error) {
