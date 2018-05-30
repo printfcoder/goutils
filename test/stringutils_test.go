@@ -318,3 +318,16 @@ func TestRegionMatches(t *testing.T) {
 		t.Error(out)
 	}
 }
+
+func TestEqualsIgnoreCase(t *testing.T) {
+	out := stringutils.EqualsIgnoreCase(" ab c ", " aB c ")
+	if !out {
+		t.Error(out)
+	}
+
+	out = stringutils.EqualsIgnoreCase(" ab c ", " aBc ")
+	if out {
+		t.Error(out)
+	}
+
+}
