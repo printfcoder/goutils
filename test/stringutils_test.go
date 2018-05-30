@@ -171,6 +171,15 @@ func TestCharAt(t *testing.T) {
 		t.Error(err)
 	}
 
+	out, err = stringutils.CharAt("01中国456789", 4)
+	if out != "4" {
+		t.Error(out)
+	}
+
+	if err != nil {
+		t.Error(err)
+	}
+
 	t.Log(out)
 }
 
@@ -330,4 +339,31 @@ func TestEqualsIgnoreCase(t *testing.T) {
 		t.Error(out)
 	}
 
+}
+
+func TestCompare(t *testing.T) {
+
+	out := stringutils.Compare("a", "b")
+	if out > 0 {
+		t.Error(out)
+	}
+
+	out = stringutils.Compare("a", "a")
+	if out != 0 {
+		t.Error(out)
+	}
+
+	// the rune of char '中' is '20013'
+	// and char '国' has rune '22269'
+	out = stringutils.Compare("国", "中")
+	if out < 0 {
+		t.Error(out)
+	}
+
+	// the rune of char '中' is '20013'
+	// and char '国' has rune '22269'
+	out = stringutils.Compare("中国国", "中国中")
+	if out < 0 {
+		t.Error(out)
+	}
 }

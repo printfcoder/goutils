@@ -3,6 +3,9 @@ package stringutils
 import (
 	"fmt"
 	"strings"
+	"unicode/utf8"
+
+	"github.com/printfcoder/goutils/mathutils"
 )
 
 const (
@@ -290,6 +293,35 @@ func EqualsIgnoreCase(str1, str2 string) bool {
 	} else {
 		return RegionMatches(str1, true, 0, str2, 0, len(str2))
 	}
+}
+
+// endregion
+
+// region compare
+
+// Compare compares two strings lexicographically.
+// The comparison is based on the Unicode value of each character in the strings.
+// The result is a negative integer if this str1 lexicographically precedes the argument str2.
+// The result is a positive integer if this str1 lexicographically follows the argument str2.
+// The result is zero if the strings are equal;
+func Compare(str1, str2 string) int {
+	l1, l2 := len(str1), len(str2)
+
+	lim := mathutils.Min(l1, l2)
+
+	for k := 0; k < lim; k++ {
+		c1, _ := CharAt(str1, k)
+		c2, _ := CharAt(str2, k)
+
+		cu1, _ := utf8.DecodeRuneInString(c1)
+		cu2, _ := utf8.DecodeRuneInString(c2)
+
+		if cu1 != cu2 {
+			return int(cu1 - cu2)
+		}
+	}
+
+	return l1 - l2
 }
 
 // endregion
