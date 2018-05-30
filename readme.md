@@ -1,5 +1,7 @@
 # Printfcoder GoUtils
 
+<a href="https://godoc.org/github.com/printfcoder/goutils"><img src="https://godoc.org/github.com/printfcoder/goutils?status.svg" alt="GoDoc"></a>
+
 Printfcoder GoUtils, a package of Golang common utility. Its inspiration comes from [apache commons lang][apache_commons_lang]
 
 ## Documentation
