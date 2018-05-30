@@ -307,11 +307,13 @@ func RegionMatches(cs string, ignoreCase bool, toffset int,
 		return false
 	}
 
-	for leng--; leng > 0; {
-		to++
-		po++
+	for ; leng > 0; leng-- {
+
 		c1 := ta[to]
+		to++
 		c2 := pa[po]
+		po++
+
 		if c1 == c2 {
 			continue
 		}

@@ -305,3 +305,16 @@ func TestToCharArray(t *testing.T) {
 		}
 	}
 }
+
+func TestRegionMatches(t *testing.T) {
+
+	out := stringutils.RegionMatches(" ab c ", true, 0, " aB c ", 0, len(" ab c "))
+	if !out {
+		t.Error(out)
+	}
+
+	out = stringutils.RegionMatches(" ab c ", true, 0, "aB c ", 0, len(" ab c "))
+	if out {
+		t.Error(out)
+	}
+}
