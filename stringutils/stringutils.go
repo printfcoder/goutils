@@ -296,8 +296,41 @@ func EqualsIgnoreCase(str1, str2 string) bool {
 
 // RegionMatches tests if two string regions are equal.
 func RegionMatches(cs string, ignoreCase bool, toffset int,
-	other string, ooffset int, len int) bool {
-	return false
+	other string, ooffset int, leng int) bool {
+
+	ta := ToCharArray(cs)
+	to := toffset
+	pa := ToCharArray(other)
+	po := ooffset
+
+	if (ooffset < 0) || (toffset < 0) || (toffset > len(ta)-leng) || (ooffset > len(pa)-leng) {
+		return false
+	}
+
+	for leng--; leng > 0; {
+		to++
+		po++
+		c1 := ta[to]
+		c2 := pa[po]
+		if c1 == c2 {
+			continue
+		}
+		if ignoreCase {
+
+			u1 := strings.ToUpper(c1)
+			u2 := strings.ToUpper(c2)
+			if u1 == u2 {
+				continue
+			}
+
+			if strings.ToLower(u1) == strings.ToLower(u2) {
+				continue
+			}
+		}
+		return false
+	}
+
+	return true
 }
 
 // CharAt returns the char value at the specified index.
@@ -310,6 +343,18 @@ func CharAt(str string, index int) (ret string, err error) {
 	str2 := []rune(str)
 
 	return string(str2[index : index+1]), nil
+}
+
+// ToCharArray returns a char array contains all string chars;
+func ToCharArray(str string) []string {
+	l := len(str)
+	ret := make([]string, 0, l)
+	for _, r := range str {
+		c := string(r)
+		ret = append(ret, c)
+	}
+
+	return ret
 }
 
 // IndexOf returns the index within this string of the first occurrence of

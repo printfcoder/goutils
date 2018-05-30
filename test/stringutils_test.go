@@ -278,3 +278,30 @@ func TestStrip(t *testing.T) {
 		t.Error(out)
 	}
 }
+
+func TestToCharArray(t *testing.T) {
+
+	_1 := []string{" ", "a", "b", " ", "c", " "}
+	out := stringutils.ToCharArray(" ab c ")
+	if len(out) != len(_1) {
+		t.Error(len(out), len(_1))
+	}
+
+	for i, v := range _1 {
+		if v != _1[i] {
+			t.Error(v, _1[i])
+		}
+	}
+
+	_2 := []string{" ", "中", "国", "a"}
+	out = stringutils.ToCharArray(" 中国a")
+	if len(out) != len(_2) {
+		t.Error(len(out), len(_2))
+	}
+
+	for i, v := range _2 {
+		if v != _2[i] {
+			t.Error(v, _2[i])
+		}
+	}
+}
