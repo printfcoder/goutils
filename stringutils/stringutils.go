@@ -295,6 +295,13 @@ func EqualsIgnoreCase(str1, str2 string) bool {
 // endregion
 
 // RegionMatches tests if two string regions are equal.
+// cs the {@code CharSequence} to be processed
+// ignoreCase whether or not to be case insensitive
+// thisStart the index to start on the param cs
+// substring the String/subString to be looked for
+// start the index to start on the subString
+// length character length of the region
+// whether the region matched
 func RegionMatches(cs string, ignoreCase bool, toffset int,
 	other string, ooffset int, leng int) bool {
 
