@@ -32,7 +32,7 @@ func demo(){
 
 ## Contributing
 
-Just [email me](email)
+Just [email me][email]
 
 ## License
 
