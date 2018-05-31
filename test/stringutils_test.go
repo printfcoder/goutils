@@ -385,3 +385,21 @@ func TestCompareIgnoreCase(t *testing.T) {
 		t.Error(out)
 	}
 }
+
+func TestEqualsAny(t *testing.T) {
+
+	out := stringutils.EqualsAny("ABC", "abc", "abcd")
+	if out {
+		t.Error(out)
+	}
+
+	out = stringutils.EqualsAnyIgnoreCase("ABC", "abc", "abcd")
+	if !out {
+		t.Error(out)
+	}
+
+	out = stringutils.EqualsAny("ABC国", "abc国", "adfsf")
+	if out {
+		t.Error(out)
+	}
+}

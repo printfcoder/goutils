@@ -338,6 +338,32 @@ func CompareIgnoreCase(str1, str2 string) int {
 	return Compare(strings.ToUpper(str1), strings.ToUpper(str2))
 }
 
+// EqualsAny compares given str1 to a char vararg of searchStrings,
+// returning true if the str1 is equal to any of the searchStrings.
+func EqualsAny(str1 string, searchStrings ...string) bool {
+	if len(searchStrings) > 0 {
+		for _, v := range searchStrings {
+			if str1 == v {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// EqualsAnyIgnoreCase compares given str1 to a char vararg of searchStrings
+// returning true if the str1 is equal to any of the searchStrings, ignoring case.</p>
+func EqualsAnyIgnoreCase(str1 string, searchStrings ...string) bool {
+	if len(searchStrings) > 0 {
+		for _, v := range searchStrings {
+			if strings.ToUpper(str1) == strings.ToUpper(v) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 // endregion
 
 // RegionMatches tests if two string regions are equal.
