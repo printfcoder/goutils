@@ -367,3 +367,21 @@ func TestCompare(t *testing.T) {
 		t.Error(out)
 	}
 }
+
+func TestCompareIgnoreCase(t *testing.T) {
+
+	out := stringutils.CompareIgnoreCase("ABC", "abc")
+	if out != 0 {
+		t.Error(out)
+	}
+
+	out = stringutils.CompareIgnoreCase("ABC", "abcb")
+	if out >= 0 {
+		t.Error(out)
+	}
+
+	out = stringutils.CompareIgnoreCase("ABC国", "abc国")
+	if out != 0 {
+		t.Error(out)
+	}
+}

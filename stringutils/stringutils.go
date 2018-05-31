@@ -324,6 +324,20 @@ func Compare(str1, str2 string) int {
 	return l1 - l2
 }
 
+// CompareIgnoreCase compares two Strings lexicographically, ignoring case differences.
+// returning:
+//  = 0, if str1 is equal to str2 (or both {@code null})
+//  < 0, if str1 is less than str2
+//  > 0, if str1 is greater than str2
+func CompareIgnoreCase(str1, str2 string) int {
+
+	if str1 == str2 {
+		return 0
+	}
+
+	return Compare(strings.ToUpper(str1), strings.ToUpper(str2))
+}
+
 // endregion
 
 // RegionMatches tests if two string regions are equal.
