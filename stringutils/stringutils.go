@@ -15,6 +15,9 @@ const (
 
 	// EMPTY is the empty String ""
 	EMPTY = ""
+
+	// INDEX_NOT_FOUND INDEX_NOT_FOUND
+	INDEX_NOT_FOUND = -1
 )
 
 // region empty checks
@@ -366,8 +369,146 @@ func EqualsAnyIgnoreCase(str1 string, searchStrings ...string) bool {
 
 // endregion
 
+// region indexof
+
+// IndexOf returns the index within this string of the first occurrence of
+// the specified character.
+func IndexOf(str, sub string) int {
+	return strings.Index(str, sub)
+}
+
+// IndexOfFromIndex return the index within this string of the first occurrence of the
+// specified substring.
+// fromIndex is the index to begin searching from
+func IndexOfFromIndex(str, sub string, fromIndex int) int {
+
+	str2 := []rune(str)
+	l := len(str2)
+
+	sub2 := []rune(sub)
+	l2 := len(sub2)
+
+	return indexOf(str, 0, l, sub, 0, l2, fromIndex)
+}
+
+// source       the characters being searched.
+// sourceOffset offset of the source string.
+// sourceCount  count of the source string.
+// target       the characters being searched for.
+// targetOffset offset of the target string.
+// targetCount  count of the target string.
+// fromIndex    the index to begin searching from.
+func indexOf(source string, sourceOffset, sourceCount int, target string, targetOffset, targetCount, fromIndex int) int {
+
+	if fromIndex >= sourceCount {
+		if targetCount == 0 {
+			return sourceCount
+		}
+		return -1
+	}
+
+	if fromIndex < 0 {
+		fromIndex = 0
+	}
+
+	if targetCount == 0 {
+		return fromIndex
+	}
+
+	first, _ := CharAt(target, targetOffset)
+	max := sourceOffset + (sourceCount - targetCount)
+
+	for i := sourceOffset + fromIndex; i <= max; i++ {
+
+		sI, _ := CharAt(source, i)
+		/* Look for first character. */
+
+		for i <= max && sI != first {
+			i++
+			sI, _ = CharAt(source, i)
+		}
+
+		/* Found first character, now look at the rest of v2 */
+		if i <= max {
+			j := i + 1
+			end := j + targetCount - 1
+			sJ, _ := CharAt(source, j)
+
+			k := targetOffset + 1
+			tk, _ := CharAt(target, k)
+			for j < end && sJ == tk {
+				j++
+				k++
+				sJ, _ = CharAt(source, j)
+				tk, _ = CharAt(target, k)
+			}
+
+			if j == end {
+				return i - sourceOffset
+			}
+		}
+	}
+	return -1
+}
+
+// OrdinalIndexOf finds the n-th index within searchStr
+// The code starts looking for a match at the start of the target,
+// incrementing the starting index by one after each successful match
+// (unless searchStr is an empty string in which case the position
+// is never incremented and '0' is returned immediately).
+// This means that matches may overlap.
+// stringUtils.OrdinalIndexOf("ababab","aba", 1)   = 0
+// stringUtils.OrdinalIndexOf("ababab","aba", 2)   = 2
+// stringUtils.OrdinalIndexOf("ababab","aba", 3)   = -1
+// stringUtils.OrdinalIndexOf("abababab", "abab", 1) = 0
+// stringUtils.OrdinalIndexOf("abababab", "abab", 2) = 2
+// stringUtils.OrdinalIndexOf("abababab", "abab", 3) = 4
+// stringUtils.OrdinalIndexOf("abababab", "abab", 4) = -1
+/*
+func OrdinalIndexOf(str, searchStr string, ordinal int, lastIndex bool) int {
+
+	if ordinal <= 0 {
+		return INDEX_NOT_FOUND
+	}
+
+	l1 := len(str)
+	l2 := len(searchStr)
+
+	if l2 == 0 {
+
+		if lastIndex {
+			return l1
+		}
+
+		return 0
+	}
+
+	found := 0
+	index := 0
+	if lastIndex {
+		index = l1
+	} else {
+		index = INDEX_NOT_FOUND
+	}
+
+	for found < ordinal {
+
+		if lastIndex {
+			index = strings.LastIndex(str, searchStr, index-1)
+		} else {
+			index = IndexOf(str, searchStr)
+		}
+
+	}
+
+	return index
+}
+
+*/
+// endregion
+
 // RegionMatches tests if two string regions are equal.
-// cs the {@code CharSequence} to be processed
+// cs the char to be processed
 // ignoreCase whether or not to be case insensitive
 // thisStart the index to start on the param cs
 // substring the String/subString to be looked for
@@ -436,10 +577,4 @@ func ToCharArray(str string) []string {
 	}
 
 	return ret
-}
-
-// IndexOf returns the index within this string of the first occurrence of
-// the specified character.
-func IndexOf(str, sub string) int {
-	return strings.Index(str, sub)
 }

@@ -403,3 +403,20 @@ func TestEqualsAny(t *testing.T) {
 		t.Error(out)
 	}
 }
+
+func TestIndexOfFromIndex(t *testing.T) {
+	out := stringutils.IndexOfFromIndex("abcdabcabc", "abc", 1)
+	if out != 4 {
+		t.Error(out)
+	}
+
+	out = stringutils.IndexOfFromIndex("abcdabcabc", "abce", 0)
+	if out != -1 {
+		t.Error(out)
+	}
+
+	out = stringutils.IndexOfFromIndex("ABC国国国", "国", 2)
+	if out != 3 {
+		t.Error(out)
+	}
+}
