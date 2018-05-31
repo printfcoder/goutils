@@ -420,3 +420,31 @@ func TestIndexOfFromIndex(t *testing.T) {
 		t.Error(out)
 	}
 }
+
+func TestOrdinalIndexOf(t *testing.T) {
+
+	// stringUtils.OrdinalIndexOf("abababab", "abab", 1) = 0
+	// stringUtils.OrdinalIndexOf("abababab", "abab", 2) = 2
+	// stringUtils.OrdinalIndexOf("abababab", "abab", 3) = 4
+	// stringUtils.OrdinalIndexOf("abababab", "abab", 4) = -1
+
+	out := stringutils.OrdinalIndexOf("abababab", "abab", 1, false)
+	if out != 0 {
+		t.Error(out)
+	}
+
+	out = stringutils.OrdinalIndexOf("abababab", "abab", 2, false)
+	if out != 2 {
+		t.Error(out)
+	}
+
+	out = stringutils.OrdinalIndexOf("abababab", "abab", 3, false)
+	if out != 4 {
+		t.Error(out)
+	}
+
+	out = stringutils.OrdinalIndexOf("abababab", "abab", 3, true)
+	if out != 0 {
+		t.Error(out)
+	}
+}

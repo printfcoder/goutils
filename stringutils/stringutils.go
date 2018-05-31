@@ -16,8 +16,8 @@ const (
 	// EMPTY is the empty String ""
 	EMPTY = ""
 
-	// INDEX_NOT_FOUND INDEX_NOT_FOUND
-	INDEX_NOT_FOUND = -1
+	// IndexNotFound IndexNotFound
+	IndexNotFound = -1
 )
 
 // region empty checks
@@ -451,6 +451,66 @@ func indexOf(source string, sourceOffset, sourceCount int, target string, target
 	return -1
 }
 
+func lastIndexOf(source string, sourceOffset, sourceCount int, target string, targetOffset, targetCount, fromIndex int) int {
+
+	rightIndex := sourceCount - targetCount
+
+	if fromIndex < 0 {
+		return -1
+	}
+
+	if fromIndex > rightIndex {
+		fromIndex = rightIndex
+	}
+
+	if targetCount == 0 {
+		return fromIndex
+	}
+
+	strLastIndex := targetOffset + targetCount - 1
+	strLastChar, _ := CharAt(target, strLastIndex)
+	min := sourceOffset + targetCount - 1
+	i := min + fromIndex
+
+startSearchForLastChar:
+	{
+
+		for {
+
+			sI, _ := CharAt(source, i)
+			for i > min && sI != strLastChar {
+				i--
+				sI, _ = CharAt(source, i)
+			}
+
+			if i < min {
+				return -1
+			}
+
+			j := i - 1
+			start := j - (targetCount - 1)
+			k := strLastIndex - 1
+
+			for j > start {
+
+				sJ, _ := CharAt(source, j)
+				j--
+				tK, _ := CharAt(target, k)
+				k--
+
+				if sJ != tK {
+					i--
+					goto startSearchForLastChar
+				}
+
+			}
+
+			return start - sourceOffset + 1
+		}
+	}
+
+}
+
 // OrdinalIndexOf finds the n-th index within searchStr
 // The code starts looking for a match at the start of the target,
 // incrementing the starting index by one after each successful match
@@ -464,11 +524,10 @@ func indexOf(source string, sourceOffset, sourceCount int, target string, target
 // stringUtils.OrdinalIndexOf("abababab", "abab", 2) = 2
 // stringUtils.OrdinalIndexOf("abababab", "abab", 3) = 4
 // stringUtils.OrdinalIndexOf("abababab", "abab", 4) = -1
-/*
 func OrdinalIndexOf(str, searchStr string, ordinal int, lastIndex bool) int {
 
 	if ordinal <= 0 {
-		return INDEX_NOT_FOUND
+		return IndexNotFound
 	}
 
 	l1 := len(str)
@@ -488,23 +547,39 @@ func OrdinalIndexOf(str, searchStr string, ordinal int, lastIndex bool) int {
 	if lastIndex {
 		index = l1
 	} else {
-		index = INDEX_NOT_FOUND
+		index = IndexNotFound
 	}
 
 	for found < ordinal {
 
 		if lastIndex {
-			index = strings.LastIndex(str, searchStr, index-1)
+			index = LastIndexOf(str, searchStr, index-1)
 		} else {
-			index = IndexOf(str, searchStr)
+			index = IndexOfFromIndex(str, searchStr, index+1)
 		}
 
+		if index < 0 {
+			return index
+		}
+
+		found++
 	}
 
 	return index
 }
 
-*/
+// LastIndexOf returns the index within this string of the last occurrence of the
+// specified substring, searching backward starting at the specified index.
+func LastIndexOf(cs, searchChar string, start int) int {
+	str2 := []rune(cs)
+	l1 := len(str2)
+
+	sub2 := []rune(searchChar)
+	l2 := len(sub2)
+
+	return lastIndexOf(cs, 0, l1, searchChar, 0, l2, start)
+}
+
 // endregion
 
 // RegionMatches tests if two string regions are equal.
