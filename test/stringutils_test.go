@@ -447,4 +447,43 @@ func TestOrdinalIndexOf(t *testing.T) {
 	if out != 0 {
 		t.Error(out)
 	}
+
+	out = stringutils.OrdinalIndexOf("中国中国中国中国", "中国中国", 3, true)
+	if out != 0 {
+		t.Error(out)
+	}
+}
+
+func TestContains(t *testing.T) {
+
+	out := stringutils.Contains("ABC国国国", "国")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.Contains("ABC国国国", "21")
+	if out != false {
+		t.Error(out)
+	}
+
+	out = stringutils.Contains("", "")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.Contains("abc", "")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.Contains("abc", "a")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.Contains("abc", "z")
+	if out != false {
+		t.Error(out)
+	}
+
 }

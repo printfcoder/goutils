@@ -582,6 +582,23 @@ func LastIndexOf(cs, searchChar string, start int) int {
 
 // endregion
 
+// region Contains
+
+// Contains checks if cs contains a search character sub
+// stringUtils.Contains("", "")      = true
+// stringUtils.Contains("abc", "")   = true
+// stringUtils.Contains("abc", "a")  = true
+// stringUtils.Contains("abc", "z")  = false
+func Contains(cs, sub string) bool {
+	if IsEmpty(cs) && IsEmpty(sub) {
+		return true
+	}
+
+	return IndexOfFromIndex(cs, sub, 0) >= 0
+}
+
+//
+
 // RegionMatches tests if two string regions are equal.
 // cs the char to be processed
 // ignoreCase whether or not to be case insensitive
