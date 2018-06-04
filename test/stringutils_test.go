@@ -520,3 +520,31 @@ func TestContainsIgnoreCase(t *testing.T) {
 		t.Error(out)
 	}
 }
+
+func TestIsWhitespace(t *testing.T) {
+
+	// space
+	out := stringutils.IsWhitespace(" ")
+	if out != true {
+		t.Error(out)
+	}
+
+	// enter
+	out = stringutils.IsWhitespace(`
+`)
+	if out != true {
+		t.Error(out)
+	}
+
+	// tab
+	out = stringutils.IsWhitespace("	")
+	if out != true {
+		t.Error(out)
+	}
+
+	// tab
+	out = stringutils.IsWhitespace("d")
+	if out == true {
+		t.Error(out)
+	}
+}

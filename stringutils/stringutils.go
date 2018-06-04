@@ -3,6 +3,7 @@ package stringutils
 import (
 	"fmt"
 	"strings"
+	"unicode"
 	"unicode/utf8"
 
 	"github.com/printfcoder/goutils/mathutils"
@@ -622,7 +623,37 @@ func ContainsIgnoreCase(str, searchStr string) bool {
 	return false
 }
 
+// ContainsWhitespace checks whether the given CharSequence contains any whitespace characters.
+func ContainsWhitespace(str string) bool {
+
+	l := len(str)
+	if l == 0 {
+		return false
+	}
+
+	for i := 0; i < l; i++ {
+		c, _ := CharAt(str, i)
+		if IsWhitespace(c) {
+			return true
+		}
+	}
+
+	return false
+}
+
 // endregion
+
+// IsWhitespace returns if the str is a whitespace of latin-1
+// 	'\t', '\n', '\v', '\f', '\r', ' ', U+0085 (NEL), U+00A0 (NBSP) are all true
+func IsWhitespace(str string) bool {
+
+	l := len(str)
+	if l != 1 {
+		return false
+	}
+
+	return unicode.IsSpace([]rune(str)[0])
+}
 
 // RegionMatches tests if two string regions are equal.
 // cs the char to be processed
