@@ -548,3 +548,59 @@ func TestIsWhitespace(t *testing.T) {
 		t.Error(out)
 	}
 }
+
+func TestIndexOfAny(t *testing.T) {
+
+	out := stringutils.IndexOfAny("", "ddd")
+	if out != -1 {
+		t.Error(out)
+	}
+
+	out = stringutils.IndexOfAny("zzabyycdxx", "z", "a")
+	if out != 0 {
+		t.Error(out)
+	}
+
+	out = stringutils.IndexOfAny("zzabyycdxx", "b", "y")
+	if out != 3 {
+		t.Error(out)
+	}
+
+	out = stringutils.IndexOfAny("中国Golang的粉丝", "黑", "丝")
+	if out != 10 {
+		t.Error(out)
+	}
+}
+
+func TestContainsAny(t *testing.T) {
+
+	out := stringutils.ContainsAny("", "d")
+	if out == true {
+		t.Error(out)
+	}
+
+	out = stringutils.ContainsAny("zzabyycdxx", "z", "a")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.ContainsAny("zzabyycdxx", "b", "y")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.ContainsAny("zzabyycdxx", "z", "y")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.ContainsAny("aba", "z")
+	if out == true {
+		t.Error(out)
+	}
+
+	out = stringutils.ContainsAny("中国Golang的粉丝", "黑", "丝")
+	if out != true {
+		t.Error(out)
+	}
+}

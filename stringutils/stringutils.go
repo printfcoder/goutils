@@ -392,6 +392,29 @@ func IndexOfFromIndex(str, sub string, fromIndex int) int {
 	return indexOf(str, 0, l, sub, 0, l2, fromIndex)
 }
 
+// IndexOfAny searchs a char to find the first index of any char in the given set of searchChars
+// stringutils.IndexOfAny("", *)                  = -1
+// stringutils.IndexOfAny(*, [])                  = -1
+// stringutils.IndexOfAny("zzabyycdxx",['z','a']) = 0
+// stringutils.IndexOfAny("zzabyycdxx",['b','y']) = 3
+// stringutils.IndexOfAny("aba", ['z'])           = -1
+func IndexOfAny(cs string, searchChars ...string) int {
+
+	csLen, searchLen := len(cs), len(searchChars)
+
+	for i := 0; i < csLen; i++ {
+		ch, _ := CharAt(cs, i)
+
+		for j := 0; j < searchLen; j++ {
+			if searchChars[j] == ch {
+				return i
+			}
+		}
+	}
+
+	return IndexNotFound
+}
+
 // source       the characters being searched.
 // sourceOffset offset of the source string.
 // sourceCount  count of the source string.
@@ -635,6 +658,29 @@ func ContainsWhitespace(str string) bool {
 		c, _ := CharAt(str, i)
 		if IsWhitespace(c) {
 			return true
+		}
+	}
+
+	return false
+}
+
+// ContainsAny checks if the CharSequence contains any character in the given set of characters.
+// stringutils.ContainsAny("", *)                  = false
+// stringutils.ContainsAny(*, [])                  = false
+// stringutils.ContainsAny("zzabyycdxx",['z','a']) = true
+// stringutils.ContainsAny("zzabyycdxx",['b','y']) = true
+// stringutils.ContainsAny("zzabyycdxx",['z','y']) = true
+// stringutils.ContainsAny("aba", ['z'])           = false
+func ContainsAny(cs string, searchChars ...string) bool {
+
+	csL, searchL := len(cs), len(searchChars)
+
+	for i := 0; i < csL; i++ {
+		ch, _ := CharAt(cs, i)
+		for j := 0; j < searchL; j++ {
+			if searchChars[j] == ch {
+				return true
+			}
 		}
 	}
 
