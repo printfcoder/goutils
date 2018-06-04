@@ -196,13 +196,13 @@ func SubStringBetween(str string, beginIndex, endIndex int) (ret string, err err
 // region
 
 // Strip strips whitespace from the start and end of a String
-// stringUtils.Strip("")       = ""
-// stringUtils.Strip("   ")    = ""
-// stringUtils.Strip("abc")    = "abc"
-// stringUtils.Strip("  abc")  = "abc"
-// stringUtils.Strip("abc  ")  = "abc"
-// stringUtils.Strip(" abc ")  = "abc"
-// stringUtils.Strip(" ab c ") = "ab c"
+// stringutils.Strip("")       = ""
+// stringutils.Strip("   ")    = ""
+// stringutils.Strip("abc")    = "abc"
+// stringutils.Strip("  abc")  = "abc"
+// stringutils.Strip("abc  ")  = "abc"
+// stringutils.Strip(" abc ")  = "abc"
+// stringutils.Strip(" ab c ") = "ab c"
 func Strip(str string) string {
 	return StripWithChar(str, " ")
 }
@@ -210,8 +210,8 @@ func Strip(str string) string {
 // StripWithChar strips any of a set of characters from the start and end of a String.
 // This is similar to trim but allows the characters
 // to be stripped to be controlled
-// stringUtils.StripWithChar("", *)            = ""
-// stringUtils.StripWithChar("  abcyx", "xyz") = "  abc"
+// stringutils.StripWithChar("", *)            = ""
+// stringutils.StripWithChar("  abcyx", "xyz") = "  abc"
 func StripWithChar(str, stripChars string) string {
 	if IsEmpty(str) {
 		return str
@@ -517,13 +517,13 @@ startSearchForLastChar:
 // (unless searchStr is an empty string in which case the position
 // is never incremented and '0' is returned immediately).
 // This means that matches may overlap.
-// stringUtils.OrdinalIndexOf("ababab","aba", 1)   = 0
-// stringUtils.OrdinalIndexOf("ababab","aba", 2)   = 2
-// stringUtils.OrdinalIndexOf("ababab","aba", 3)   = -1
-// stringUtils.OrdinalIndexOf("abababab", "abab", 1) = 0
-// stringUtils.OrdinalIndexOf("abababab", "abab", 2) = 2
-// stringUtils.OrdinalIndexOf("abababab", "abab", 3) = 4
-// stringUtils.OrdinalIndexOf("abababab", "abab", 4) = -1
+// stringutils.OrdinalIndexOf("ababab","aba", 1)   = 0
+// stringutils.OrdinalIndexOf("ababab","aba", 2)   = 2
+// stringutils.OrdinalIndexOf("ababab","aba", 3)   = -1
+// stringutils.OrdinalIndexOf("abababab", "abab", 1) = 0
+// stringutils.OrdinalIndexOf("abababab", "abab", 2) = 2
+// stringutils.OrdinalIndexOf("abababab", "abab", 3) = 4
+// stringutils.OrdinalIndexOf("abababab", "abab", 4) = -1
 func OrdinalIndexOf(str, searchStr string, ordinal int, lastIndex bool) int {
 
 	if ordinal <= 0 {
@@ -585,10 +585,10 @@ func LastIndexOf(cs, searchChar string, start int) int {
 // region Contains
 
 // Contains checks if cs contains a search character sub
-// stringUtils.Contains("", "")      = true
-// stringUtils.Contains("abc", "")   = true
-// stringUtils.Contains("abc", "a")  = true
-// stringUtils.Contains("abc", "z")  = false
+// stringutils.Contains("", "")      = true
+// stringutils.Contains("abc", "")   = true
+// stringutils.Contains("abc", "a")  = true
+// stringutils.Contains("abc", "z")  = false
 func Contains(cs, sub string) bool {
 	if IsEmpty(cs) && IsEmpty(sub) {
 		return true
@@ -597,7 +597,32 @@ func Contains(cs, sub string) bool {
 	return IndexOfFromIndex(cs, sub, 0) >= 0
 }
 
-//
+// ContainsIgnoreCase checks if str contains a searchStr irrespective of case
+// stringutils.ContainsIgnoreCase("", "") = true
+// stringutils.ContainsIgnoreCase("abc", "") = true
+// stringutils.ContainsIgnoreCase("abc", "a") = true
+// stringutils.ContainsIgnoreCase("abc", "z") = false
+// stringutils.ContainsIgnoreCase("abc", "A") = true
+// stringutils.ContainsIgnoreCase("abc", "Z") = false
+func ContainsIgnoreCase(str, searchStr string) bool {
+
+	if IsEmpty(str) && IsEmpty(searchStr) {
+		return true
+	}
+
+	l1 := RuneLen(searchStr)
+	max := RuneLen(str) - l1
+
+	for i := 0; i <= max; i++ {
+		if RegionMatches(str, true, i, searchStr, 0, l1) {
+			return true
+		}
+	}
+
+	return false
+}
+
+// endregion
 
 // RegionMatches tests if two string regions are equal.
 // cs the char to be processed
@@ -669,4 +694,9 @@ func ToCharArray(str string) []string {
 	}
 
 	return ret
+}
+
+// RuneLen returns length of str's rune array
+func RuneLen(str string) int {
+	return len([]rune(str))
 }

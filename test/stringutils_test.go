@@ -487,3 +487,36 @@ func TestContains(t *testing.T) {
 	}
 
 }
+
+func TestContainsIgnoreCase(t *testing.T) {
+
+	out := stringutils.ContainsIgnoreCase("ABC国国国", "国")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.ContainsIgnoreCase("abc", "")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.ContainsIgnoreCase("abc", "a")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.ContainsIgnoreCase("abc", "z")
+	if out == true {
+		t.Error(out)
+	}
+
+	out = stringutils.ContainsIgnoreCase("abc", "A")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.ContainsIgnoreCase("abc", "Z")
+	if out == true {
+		t.Error(out)
+	}
+}
