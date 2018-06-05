@@ -649,3 +649,25 @@ func TestContainsOnly(t *testing.T) {
 		t.Error(out)
 	}
 }
+
+func TestContainsNone(t *testing.T) {
+	out := stringutils.ContainsNone("ab", "")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.ContainsNone("abab", "x", "y", "z")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.ContainsNone("ab1", "x", "y", "z")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.ContainsNone("abz", "x", "y", "z")
+	if out != false {
+		t.Error(out)
+	}
+}
