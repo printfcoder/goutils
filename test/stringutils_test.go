@@ -627,3 +627,25 @@ func TestIndexOfAnyBut(t *testing.T) {
 		t.Error(out)
 	}
 }
+
+func TestContainsOnly(t *testing.T) {
+	out := stringutils.ContainsOnly("ab", "")
+	if out != false {
+		t.Error(out)
+	}
+
+	out = stringutils.ContainsOnly("abab", "a", "b", "c")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.ContainsOnly("ab1", "a", "b", "c")
+	if out != false {
+		t.Error(out)
+	}
+
+	out = stringutils.ContainsOnly("abz", "a", "b", "c")
+	if out != false {
+		t.Error(out)
+	}
+}

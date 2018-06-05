@@ -712,6 +712,23 @@ func ContainsAny(cs string, searchChars ...string) bool {
 	return false
 }
 
+// ContainsOnly checks if the CharSequence contains only certain characters.
+// stringutils.ContainsOnly("", *)         = true
+// stringutils.ContainsOnly("ab", "")      = false
+// stringutils.ContainsOnly("abab", "a", "b", "c") = true
+// stringutils.ContainsOnly("ab1", "a", "b", "c")  = false
+// stringutils.ContainsOnly("abz", "a", "b", "c")  = false
+func ContainsOnly(cs string, valid ...string) bool {
+
+	if len(cs) == 0 {
+		return true
+	}
+	if len(valid) == 0 {
+		return false
+	}
+	return IndexOfAnyBut(cs, valid...) == IndexNotFound
+}
+
 // endregion
 
 // IsWhitespace returns if the str is a whitespace of latin-1
