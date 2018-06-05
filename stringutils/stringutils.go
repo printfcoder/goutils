@@ -787,6 +787,79 @@ func ContainsNone(cs string, searchChars ...string) bool {
 
 // endregion
 
+// region Left/Right/Mid
+
+// Left gets the leftmost l characters of a String.
+// stringutils.Left("abc", 0)   = ""
+// stringutils.Left("abc", 2)   = "ab"
+// stringutils.Left("abc", 4)   = "abc"
+func Left(str string, l int) string {
+
+	sl := RuneLen(str)
+
+	if sl == 0 || l < 0 {
+		return EMPTY
+	}
+
+	if sl <= l {
+		return str
+	}
+
+	ret, _ := SubStringBetween(str, 0, l)
+
+	return ret
+}
+
+// Right gets the rightmost r(length) characters of a String.
+// stringutils.Right("abc", 0)   = ""
+// stringutils.Right("abc", 2)   = "bc"
+// stringutils.Right("abc", 4)   = "abc"
+func Right(str string, r int) string {
+	sl := RuneLen(str)
+
+	if sl == 0 || r < 0 {
+		return EMPTY
+	}
+
+	if sl <= r {
+		return str
+	}
+
+	ret, _ := SubString(str, sl-r)
+
+	return ret
+}
+
+// Mid gets length l characters from the middle of a String.
+// stringutils.Mid("abc", 0, 2)   = "ab"
+// stringutils.Mid("abc", 0, 4)   = "abc"
+// stringutils.Mid("abc", 2, 4)   = "c"
+// stringutils.Mid("abc", 4, 2)   = ""
+// stringutils.Mid("abc", -2, 2)  = "ab"
+func Mid(str string, pos, l int) string {
+
+	sl := RuneLen(str)
+
+	if l < 0 || pos > sl {
+		return EMPTY
+	}
+
+	if pos < 0 {
+		pos = 0
+	}
+
+	if sl <= pos+l {
+		ret, _ := SubString(str, pos)
+		return ret
+	}
+
+	ret, _ := SubStringBetween(str, pos, pos+l)
+
+	return ret
+}
+
+// endregion
+
 // IsWhitespace returns if the str is a whitespace of latin-1
 // 	'\t', '\n', '\v', '\f', '\r', ' ', U+0085 (NEL), U+00A0 (NBSP) are all true
 func IsWhitespace(str string) bool {

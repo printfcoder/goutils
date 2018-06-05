@@ -694,4 +694,81 @@ func TestLastIndexOfAny(t *testing.T) {
 	}
 }
 
+func TestLeft(t *testing.T) {
 
+	out := stringutils.Left("abc", 0)
+	if out != "" {
+		t.Error(out)
+	}
+
+	out = stringutils.Left("abc", 2)
+	if out != "ab" {
+		t.Error(out)
+	}
+
+	out = stringutils.Left("abc", 4)
+	if out != "abc" {
+		t.Error(out)
+	}
+
+	out = stringutils.Left("中国Golang的粉丝", 4)
+	if out != "中国Go" {
+		t.Error(out)
+	}
+}
+
+func TestRight(t *testing.T) {
+
+	out := stringutils.Right("abc", 0)
+	if out != "" {
+		t.Error(out)
+	}
+
+	out = stringutils.Right("abc", 2)
+	if out != "bc" {
+		t.Error(out)
+	}
+
+	out = stringutils.Right("abc", 4)
+	if out != "abc" {
+		t.Error(out)
+	}
+
+	out = stringutils.Right("中国Golang的粉丝", 4)
+	if out != "g的粉丝" {
+		t.Error(out)
+	}
+}
+
+func TestMid(t *testing.T) {
+
+	out := stringutils.Mid("abc", 0, 2)
+	if out != "ab" {
+		t.Error(out)
+	}
+
+	out = stringutils.Mid("abc", 0, 4)
+	if out != "abc" {
+		t.Error(out)
+	}
+
+	out = stringutils.Mid("abc", 2, 4)
+	if out != "c" {
+		t.Error(out)
+	}
+
+	out = stringutils.Mid("abc", 4, 2)
+	if out != "" {
+		t.Error(out)
+	}
+
+	out = stringutils.Mid("abc", -2, 2)
+	if out != "ab" {
+		t.Error(out)
+	}
+
+	out = stringutils.Mid("中国Golang的粉丝", 2, 8)
+	if out != "Golang的粉" {
+		t.Error(out)
+	}
+}
