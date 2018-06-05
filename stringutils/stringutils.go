@@ -604,6 +604,31 @@ func LastIndexOf(cs, searchChar string, start int) int {
 	return lastIndexOf(cs, 0, l1, searchChar, 0, l2, start)
 }
 
+// IndexOfAnyBut searches a CharSequence to find the first index of any character not in the given set of characters.
+// stringutils.IndexOfAnyBut("", *)                         = -1
+// stringutils.IndexOfAnyBut(*, [])                         = -1
+// stringutils.IndexOfAnyBut("zzabyycdxx", ['z', 'a'] )     = 3
+// stringutils.IndexOfAnyBut("aba",  ['z'] )                = 0
+// stringutils.IndexOfAnyBut("aba",  ['a', 'b'])            = -1
+func IndexOfAnyBut(cs string, searcChars ...string) int {
+
+	csL, searchL := len(cs), len(searcChars)
+
+outer:
+
+	for i := 0; i < csL; i++ {
+		ch, _ := CharAt(cs, i)
+		for j := 0; j < searchL; j++ {
+			if searcChars[j] == ch {
+				continue outer
+			}
+		}
+		return i
+
+	}
+	return IndexNotFound
+}
+
 // endregion
 
 // region Contains

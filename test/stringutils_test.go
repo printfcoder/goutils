@@ -604,3 +604,26 @@ func TestContainsAny(t *testing.T) {
 		t.Error(out)
 	}
 }
+
+func TestIndexOfAnyBut(t *testing.T) {
+
+	out := stringutils.IndexOfAnyBut("zzabyycdxx", "z", "a")
+	if out != 3 {
+		t.Error(out)
+	}
+
+	out = stringutils.IndexOfAnyBut("aba", "z")
+	if out != 0 {
+		t.Error(out)
+	}
+
+	out = stringutils.IndexOfAnyBut("aba", "a", "b")
+	if out != -1 {
+		t.Error(out)
+	}
+
+	out = stringutils.IndexOfAnyBut("中国Golang的粉丝", "黑", "丝")
+	if out != 0 {
+		t.Error(out)
+	}
+}
