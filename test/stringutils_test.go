@@ -671,3 +671,27 @@ func TestContainsNone(t *testing.T) {
 		t.Error(out)
 	}
 }
+
+func TestLastIndexOfAny(t *testing.T) {
+	out := stringutils.LastIndexOfAny("zzabyycdxx", "ab", "cd")
+	if out != 6 {
+		t.Error(out)
+	}
+
+	out = stringutils.LastIndexOfAny("zzabyycdxx", "cd", "ab")
+	if out != 6 {
+		t.Error(out)
+	}
+
+	out = stringutils.LastIndexOfAny("zzabyycdxx", "mn", "op")
+	if out != -1 {
+		t.Error(out)
+	}
+
+	out = stringutils.LastIndexOfAny("zzabyycdxx", "mn", "")
+	if out != -1 {
+		t.Error(out)
+	}
+}
+
+

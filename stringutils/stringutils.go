@@ -629,6 +629,39 @@ outer:
 	return IndexNotFound
 }
 
+// LastIndexOfAny find the latest index of any of a set of potential substrings.
+// !! something is different that searching a array containing "" do NOT return the length of the searched array, but the Apache StringUtils will return the length
+// stringutils.LastIndexOfAny(*, [])                     = -1
+// stringutils.LastIndexOfAny("zzabyycdxx", ["ab","cd"]) = 6
+// stringutils.LastIndexOfAny("zzabyycdxx", ["cd","ab"]) = 6
+// stringutils.LastIndexOfAny("zzabyycdxx", ["mn","op"]) = -1
+// stringutils.LastIndexOfAny("zzabyycdxx", ["mn","op"]) = -1
+// stringutils.LastIndexOfAny("zzabyycdxx", ["mn",""])   = 10
+func LastIndexOfAny(cs string, searcChars ...string) int {
+
+	csL := len(cs)
+	if csL == 0 || len(searcChars) == 0 {
+		return IndexNotFound
+	}
+
+	ret := IndexNotFound
+	tmp := 0
+
+	for _, search := range searcChars {
+
+		if len(search) == 0 {
+			continue
+		}
+
+		tmp = LastIndexOf(cs, search, csL)
+		if tmp > ret {
+			ret = tmp
+		}
+	}
+
+	return ret
+}
+
 // endregion
 
 // region Contains
