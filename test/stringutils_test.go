@@ -200,6 +200,11 @@ func TestIndexOf(t *testing.T) {
 		t.Error(out)
 	}
 
+	out = stringutils.IndexOf("中国456789", "国")
+	if out != 1 {
+		t.Error(out)
+	}
+
 	t.Log(out)
 }
 
@@ -769,6 +774,34 @@ func TestMid(t *testing.T) {
 
 	out = stringutils.Mid("中国Golang的粉丝", 2, 8)
 	if out != "Golang的粉" {
+		t.Error(out)
+	}
+}
+
+func TestSubstringBefore(t *testing.T) {
+
+	out := stringutils.SubstringBefore("abc", "a")
+	if out != "" {
+		t.Error(out)
+	}
+
+	out = stringutils.SubstringBefore("abcba", "b")
+	if out != "a" {
+		t.Error(out)
+	}
+
+	out = stringutils.SubstringBefore("abc", "c")
+	if out != "ab" {
+		t.Error(out)
+	}
+
+	out = stringutils.SubstringBefore("abc", "d")
+	if out != "abc" {
+		t.Error(out)
+	}
+
+	out = stringutils.SubstringBefore("中国Golang的粉丝", "丝")
+	if out != "中国Golang的粉" {
 		t.Error(out)
 	}
 }

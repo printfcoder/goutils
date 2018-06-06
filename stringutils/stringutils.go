@@ -173,7 +173,7 @@ func SubStringBetween(str string, beginIndex, endIndex int) (ret string, err err
 		return "", fmt.Errorf("beginIndex cannot be negative")
 	}
 
-	l := len(str)
+	l := RuneLen(str)
 
 	if endIndex > l {
 		return "", fmt.Errorf("endIndex out of bound")
@@ -190,6 +190,33 @@ func SubStringBetween(str string, beginIndex, endIndex int) (ret string, err err
 		str2 := []rune(str)
 		return string(str2[beginIndex:endIndex]), nil
 	}
+}
+
+// SubstringBefore gets the substring before the first occurrence of a separator.
+// stringutils.SubstringBefore("abc", "a")   = ""
+// stringutils.SubstringBefore("abcba", "b") = "a"
+// stringutils.SubstringBefore("abc", "c")   = "ab"
+// stringutils.SubstringBefore("abc", "d")   = "abc"
+// stringutils.SubstringBefore("abc", "")    = ""
+func SubstringBefore(str, separator string) string {
+
+	if IsEmpty(str) {
+		return str
+	}
+
+	if IsEmpty(separator) {
+		return EMPTY
+	}
+
+	pos := IndexOf(str, separator)
+
+	if pos == IndexNotFound {
+		return str
+	}
+
+	ret, _ := SubStringBetween(str, 0, pos)
+
+	return ret
 }
 
 // endregion
@@ -375,7 +402,35 @@ func EqualsAnyIgnoreCase(str1 string, searchStrings ...string) bool {
 // IndexOf returns the index within this string of the first occurrence of
 // the specified character.
 func IndexOf(str, sub string) int {
-	return strings.Index(str, sub)
+
+	str2 := []rune(str)
+
+	sub2 := []rune(sub)
+	l2 := len(sub2)
+
+outer:
+	for i, s := range str2 {
+
+		for j, su := range sub2 {
+
+			if su == s {
+
+				if j+1 == l2 {
+					return i
+				}
+
+				continue
+			}
+
+			if j+1 == l2 {
+				continue outer
+			}
+
+			break
+		}
+	}
+
+	return IndexNotFound
 }
 
 // IndexOfFromIndex return the index within this string of the first occurrence of the
