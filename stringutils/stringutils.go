@@ -219,6 +219,34 @@ func SubstringBefore(str, separator string) string {
 	return ret
 }
 
+// SubstringAfter gets the substring after the first occurrence of a separator.
+// The separator is not returned.
+// stringutils.SubstringAfter("abc", "a")   = "bc"
+// stringutils.SubstringAfter("abcba", "b") = "cba"
+// stringutils.SubstringAfter("abc", "c")   = ""
+// stringutils.SubstringAfter("abc", "d")   = ""
+// stringutils.SubstringAfter("abc", "")    = "abc"
+func SubstringAfter(str, separator string) string {
+
+	if IsEmpty(str) {
+		return str
+	}
+
+	spL := RuneLen(separator)
+	if spL == 0 {
+		return str
+	}
+
+	pos := IndexOf(str, separator)
+	if pos == IndexNotFound {
+		return EMPTY
+	}
+
+	ret, _ := SubString(str, pos+spL)
+
+	return ret
+}
+
 // endregion
 
 // region

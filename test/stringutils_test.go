@@ -805,3 +805,34 @@ func TestSubstringBefore(t *testing.T) {
 		t.Error(out)
 	}
 }
+
+func TestSubstringAfter(t *testing.T) {
+
+	out := stringutils.SubstringAfter("abc", "a")
+	if out != "bc" {
+		t.Error(out)
+	}
+
+	out = stringutils.SubstringAfter("abcba", "b")
+	if out != "cba" {
+		t.Error(out)
+	}
+	out = stringutils.SubstringAfter("abc", "c")
+	if out != "" {
+		t.Error(out)
+	}
+	out = stringutils.SubstringAfter("abc", "d")
+	if out != "" {
+		t.Error(out)
+	}
+	out = stringutils.SubstringAfter("abc", "")
+	if out != "abc" {
+		t.Error(out)
+	}
+
+	out = stringutils.SubstringAfter("中国Golang的粉丝", "国")
+	if out != "Golang的粉丝" {
+		t.Error(out)
+	}
+
+}
