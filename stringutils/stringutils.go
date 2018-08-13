@@ -2,12 +2,14 @@ package stringutils
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/printfcoder/goutils/mathutils"
 	"strconv"
+
+	"github.com/printfcoder/goutils/mathutils"
 )
 
 const (
@@ -98,6 +100,16 @@ func IsAnyBlank(css ...string) bool {
 		}
 	}
 
+	return false
+}
+
+// StringsHasOneEmpty checks the input strings has someone empty.
+func StringsHasOneEmpty(in ...string) bool {
+	for _, str := range in {
+		if len(str) == 0 {
+			return true
+		}
+	}
 	return false
 }
 
@@ -979,6 +991,24 @@ func ToInt64(str string) (ret int64, err error) {
 
 // endregion
 
+// IDArrayToSQLInString combiles id nums to a sql "in" clause string
+func IDArrayToSQLInString(in []int) string {
+	if len(in) > 0 {
+		ret := strings.Join(IntArrayToStringArray(in), "','")
+		return "'" + ret + "'"
+	}
+	return ""
+}
+
+// IntArrayToStringArray converts int an array to new string array
+func IntArrayToStringArray(in []int) []string {
+	ret := make([]string, 0, len(in))
+	for _, v := range in {
+		ret = append(ret, strconv.Itoa(v))
+	}
+	return ret
+}
+
 // IsWhitespace returns if the str is a whitespace of latin-1
 // 	'\t', '\n', '\v', '\f', '\r', ' ', U+0085 (NEL), U+00A0 (NBSP) are all true
 func IsWhitespace(str string) bool {
@@ -1066,4 +1096,20 @@ func ToCharArray(str string) []string {
 // RuneLen returns length of str's rune array
 func RuneLen(str string) int {
 	return len([]rune(str))
+}
+
+// StringChinesePhoneNumOrEmail phone all email
+// if return 2 means 'in' is a phone num, 1 means it is a email address
+func StringChinesePhoneNumOrEmail(in string) int {
+	reg, _ := regexp.Compile(`^1[34578]\d{9}$`)
+	if reg.MatchString(in) {
+		return 2
+	}
+
+	reg = regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`)
+	if reg.MatchString(in) {
+		return 1
+	}
+
+	return 0
 }
