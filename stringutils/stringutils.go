@@ -7,10 +7,10 @@ import (
 	"unicode/utf8"
 
 	"github.com/printfcoder/goutils/mathutils"
+	"strconv"
 )
 
 const (
-
 	// SPACE is a String for a space character.
 	SPACE = " "
 
@@ -939,6 +939,42 @@ func Mid(str string, pos, l int) string {
 	ret, _ := SubStringBetween(str, pos, pos+l)
 
 	return ret
+}
+
+// endregion
+
+// region Numeric
+
+// IsNumeric Checks if the str string contains only Unicode digits.
+// A decimal point is not a Unicode digit and returns false.</p>
+// StringUtils.IsNumeric("")     = false
+// StringUtils.IsNumeric("  ")   = false
+// StringUtils.IsNumeric("123")  = true
+// StringUtils.IsNumeric("12 3") = false
+// StringUtils.IsNumeric("ab2c") = false
+// StringUtils.IsNumeric("12-3") = false
+// StringUtils.IsNumeric("12.3") = false
+// StringUtils.IsNumeric("-123") = false
+// StringUtils.IsNumeric("+123") = false
+func IsNumeric(str string) bool {
+	if IsEmpty(str) {
+		return false
+	}
+	sz := RuneLen(str)
+	for i := 0; i < sz; i++ {
+		c, _ := CharAt(str, i)
+		if !unicode.IsDigit([]rune(c)[0]) {
+			return false
+		}
+	}
+
+	return true
+}
+
+// ToInt64 converts str to int64
+func ToInt64(str string) (ret int64, err error) {
+	ret, err = strconv.ParseInt(str, 10, 64)
+	return
 }
 
 // endregion

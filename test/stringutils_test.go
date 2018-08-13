@@ -836,3 +836,48 @@ func TestSubstringAfter(t *testing.T) {
 	}
 
 }
+
+func TestIsNumeric(t *testing.T) {
+
+	out := stringutils.IsNumeric("")
+	if out != false {
+		t.Error(out)
+	}
+
+	out = stringutils.IsNumeric("  ")
+	if out != false {
+		t.Error(out)
+	}
+
+	out = stringutils.IsNumeric("123")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.IsNumeric("12 3")
+	if out != false {
+		t.Error(out)
+	}
+
+	out = stringutils.IsNumeric("ab2c")
+	if out != false {
+		t.Error(out)
+	}
+
+	out = stringutils.IsNumeric("12-3")
+	if out != false {
+		t.Error(out)
+	}
+	out = stringutils.IsNumeric("12.3")
+	if out != false {
+		t.Error(out)
+	}
+	out = stringutils.IsNumeric("-123")
+	if out != false {
+		t.Error(out)
+	}
+	out = stringutils.IsNumeric("+123")
+	if out != false {
+		t.Error(out)
+	}
+}
