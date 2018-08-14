@@ -989,6 +989,11 @@ func ToInt64(str string) (ret int64, err error) {
 	return
 }
 
+// FromInt64 converts int64 to str
+func FromInt64(in int64) (ret string) {
+	return strconv.FormatInt(in, 16)
+}
+
 // endregion
 
 // IDArrayToSQLInString combiles id nums to a sql "in" clause string
