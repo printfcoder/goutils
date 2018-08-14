@@ -1,6 +1,7 @@
 package stringutils
 
 import (
+	"encoding/base64"
 	"fmt"
 	"regexp"
 	"strings"
@@ -995,6 +996,27 @@ func FromInt64(in int64) (ret string) {
 }
 
 // endregion
+
+// region base64
+
+// ToBase64 encodes the str in to new base64 string.
+func ToBase64(in string) string {
+	return base64.StdEncoding.EncodeToString([]byte(in))
+}
+
+// FromBase64 decodes the str in encoded to original string.
+func FromBase64(in string) (str string, err error) {
+
+	decoded, err := base64.StdEncoding.DecodeString(in)
+	if err != nil {
+		fmt.Println("decode error:", err)
+		return
+	}
+
+	return string(decoded), nil
+}
+
+// endregion base64
 
 // IDArrayToSQLInString combiles id nums to a sql "in" clause string
 func IDArrayToSQLInString(in []int) string {
