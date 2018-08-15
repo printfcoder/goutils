@@ -1140,3 +1140,28 @@ func StringChinesePhoneNumOrEmail(in string) int {
 
 	return 0
 }
+
+// region startsWith
+
+
+// Check if a CharSequence starts with a specified prefix.
+// StringUtils.startsWith("", "")      = true
+// StringUtils.startsWith("", "abc")     = false
+// StringUtils.startsWith("abcdef", "")  = false
+// StringUtils.startsWith("abcdef", "abc") = true
+// StringUtils.startsWith("ABCDEF", "abc") = false
+func StartsWith(str, prefix string) bool {
+	return startsWith(str, prefix, false)
+}
+
+func startsWith(str, prefix string, ignoreCase bool) bool {
+	if str == "" || prefix == "" {
+		return str == "" && prefix == ""
+	}
+	if len(prefix) > len(str) {
+		return false
+	}
+	return RegionMatches(str, ignoreCase, 0, prefix, 0, len(prefix))
+}
+
+// endregion

@@ -881,3 +881,31 @@ func TestIsNumeric(t *testing.T) {
 		t.Error(out)
 	}
 }
+
+func TestStartsWith(t *testing.T) {
+
+	out := stringutils.StartsWith("", "")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.StartsWith("", "abc")
+	if out != false {
+		t.Error(out)
+	}
+
+	out = stringutils.StartsWith("abcdef", "")
+	if out != false {
+		t.Error(out)
+	}
+
+	out = stringutils.StartsWith("abcdef", "abc")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.StartsWith("ABCDEF", "abc")
+	if out != false {
+		t.Error(out)
+	}
+}
