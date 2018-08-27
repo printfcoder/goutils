@@ -1141,8 +1141,17 @@ func StringChinesePhoneNumOrEmail(in string) int {
 	return 0
 }
 
-// region startsWith
+// ToString changes the string "in" to a string.
+func ToString(in interface{}) string {
 
+	if v, ok := in.(string); ok {
+		return v
+	}
+
+	return fmt.Sprintf("%v", in)
+}
+
+// region startsWith
 
 // Check if a CharSequence starts with a specified prefix.
 // StringUtils.startsWith("", "")      = true
