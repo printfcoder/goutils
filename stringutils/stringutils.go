@@ -1174,3 +1174,9 @@ func startsWith(str, prefix string, ignoreCase bool) bool {
 }
 
 // endregion
+
+// Split slices s into all substrings separated by sep and returns a slice of
+// the substrings between those separators.
+func Split(str, sep string) []string {
+	return strings.Split(str, sep)
+}
