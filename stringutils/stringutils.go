@@ -984,6 +984,15 @@ func IsNumeric(str string) bool {
 	return true
 }
 
+// ToInt converts str to int
+func ToInt32(str string) (ret int32, err error) {
+	ret2, err := strconv.ParseInt(str, 10, 32)
+	if err != nil {
+		return
+	}
+	return int32(ret2), nil
+}
+
 // ToInt64 converts str to int64
 func ToInt64(str string) (ret int64, err error) {
 	ret, err = strconv.ParseInt(str, 10, 64)
