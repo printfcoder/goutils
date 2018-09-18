@@ -138,7 +138,7 @@ func TruncateFromWithMaxWith(str string, offset, maxWidth int) (ret string, err 
 		return str, nil
 	}
 
-	l := len(str)
+	l := RuneLen(str)
 
 	if offset > l {
 		return EMPTY, nil
@@ -153,7 +153,7 @@ func TruncateFromWithMaxWith(str string, offset, maxWidth int) (ret string, err 
 			ix = offset + maxWidth
 		}
 
-		return SubStringBetween(str, offset, ix-1)
+		return SubStringBetween(str, offset, ix)
 	}
 
 	return SubString(str, offset)
@@ -167,7 +167,7 @@ func SubString(str string, beginIndex int) (ret string, err error) {
 		return "", fmt.Errorf("beginIndex cannot be negative")
 	}
 
-	subLen := len(str) - beginIndex
+	subLen := RuneLen(str) - beginIndex
 
 	if subLen <= 0 {
 		return "", fmt.Errorf("beginIndex out of bound")
@@ -1075,24 +1075,34 @@ func IsWhitespace(str string) bool {
 // start the index to start on the subString
 // length character length of the region
 // whether the region matched
-func RegionMatches(cs string, ignoreCase bool, toffset int,
-	other string, ooffset int, leng int) bool {
+func RegionMatches(cs string, ignoreCase bool, thisStart int,
+	substring string, start int, length int) bool {
+
+	index1 := thisStart
+	index2 := start
+
+	srcLen := RuneLen(cs) - thisStart
+	otherLen := RuneLen(substring) - start
 
 	ta := ToCharArray(cs)
-	to := toffset
-	pa := ToCharArray(other)
-	po := ooffset
+	pa := ToCharArray(substring)
 
-	if (ooffset < 0) || (toffset < 0) || (toffset > len(ta)-leng) || (ooffset > len(pa)-leng) {
+	// Check for invalid parameters
+	if thisStart < 0 || start < 0 || length < 0 {
 		return false
 	}
 
-	for ; leng > 0; leng-- {
+	// Check that the regions are long enough
+	if srcLen < length || otherLen < length {
+		return false
+	}
 
-		c1 := ta[to]
-		to++
-		c2 := pa[po]
-		po++
+	for ; length > 0; length-- {
+
+		c1 := ta[index1]
+		index1++
+		c2 := pa[index2]
+		index2++
 
 		if c1 == c2 {
 			continue
@@ -1227,12 +1237,12 @@ func StartsWith(str, prefix string) bool {
 
 func StartsWithIgnoreCase(str, prefix string, ignoreCase bool) bool {
 	if str == "" || prefix == "" {
-		return str == "" && prefix == ""
+		return prefix == ""
 	}
 	if len(prefix) > len(str) {
 		return false
 	}
-	return RegionMatches(str, ignoreCase, 0, prefix, 0, len(prefix))
+	return RegionMatches(str, ignoreCase, 0, prefix, 0, RuneLen(prefix))
 }
 
 // endregion
@@ -1258,7 +1268,7 @@ func DeleteWhitespace(str string) string {
 		return ""
 	}
 
-	sz := len(str)
+	sz := RuneLen(str)
 	var builder strings.Builder
 
 	count := 0
@@ -1289,7 +1299,7 @@ func RemoveStart(str, remove string) string {
 	}
 
 	if StartsWith(str, remove) {
-		ret, _ := SubString(str, len(remove))
+		ret, _ := SubString(str, RuneLen(remove))
 		return ret
 	}
 
@@ -1312,11 +1322,106 @@ func RemoveStartIgnoreCase(str, remove string) string {
 	}
 
 	if StartsWithIgnoreCase(str, remove, true) {
-		ret, _ := SubString(str, len(remove))
+		ret, _ := SubString(str, RuneLen(remove))
 		return ret
 	}
 
 	return str
+}
+
+// RemoveEnd removes a substring only if it is at the end of a source string,
+// otherwise returns the source string
+
+// case when len(remove) is greater than len(str), then str will be returned
+
+// stringutils.RemoveEnd("", *)        = ""
+// stringutils.RemoveEnd("www.domain.com", ".com.")  = "www.domain.com"
+// stringutils.RemoveEnd("www.domain.com", ".com")   = "www.domain"
+// stringutils.RemoveEnd("www.domain.com", "domain") = "www.domain.com"
+// stringutils.RemoveEnd("abc", "")    = "abc"
+func RemoveEnd(str, remove string) string {
+
+	if str == "" || remove == "" || len(remove) > len(str) {
+		return str
+	}
+
+	if EndsWith(str, remove) {
+		ret, _ := SubStringBetween(str, 0, len(str)-len(remove))
+		return ret
+	}
+
+	return str
+}
+
+// RemoveEndIgnoreCase cases insensitive removal of a substring if it is at the end of a source string,
+// otherwise returns the source string.</p>
+
+// case when len(remove) is greater than len(str), then str will be returned
+
+// stringutils.RemoveEndIgnoreCase("", *)        = ""
+// stringutils.RemoveEndIgnoreCase("www.domain.com", ".com.")  = "www.domain.com"
+// stringutils.RemoveEndIgnoreCase("www.domain.com", ".com")   = "www.domain"
+// stringutils.RemoveEndIgnoreCase("www.domain.com", "domain") = "www.domain.com"
+// stringutils.RemoveEndIgnoreCase("abc", "")    = "abc"
+// stringutils.RemoveEndIgnoreCase("www.domain.com", ".COM") = "www.domain")
+// stringutils.RemoveEndIgnoreCase("www.domain.COM", ".com") = "www.domain")
+func RemoveEndIgnoreCase(str, remove string) string {
+
+	if str == "" || remove == "" || len(remove) > len(str) {
+		return str
+	}
+
+	if EndsWithIgnoreCase(str, remove) {
+		ret, _ := SubStringBetween(str, 0, len(str)-len(remove))
+		return ret
+	}
+
+	return str
+}
+
+// endregion
+
+// region endWith
+
+// EndsWith checks if a CharSequence ends with a specified suffix.</p>
+// The comparison is case sensitive.
+
+// stringutils.EndsWith("", "def")     = false
+// stringutils.EndsWith("abcdef", "def") = true
+// stringutils.EndsWith("ABCDEF", "def") = false
+// stringutils.EndsWith("ABCDEF", "cde") = false
+// stringutils.EndsWith("ABCDEF", "")    = true
+func EndsWith(str, suffix string) bool {
+	return endsWith(str, suffix, false)
+}
+
+// EndsWithIgnoreCase case insensitive checks if a CharSequence ends with a specified suffix.
+//
+// The comparison is case insensitive.
+// stringutils.EndsWithIgnoreCase("", "def")     = false
+// stringutils.EndsWithIgnoreCase("abcdef", "")  = true
+// stringutils.EndsWithIgnoreCase("abcdef", "def") = true
+// stringutils.EndsWithIgnoreCase("ABCDEF", "def") = true
+// stringutils.EndsWithIgnoreCase("ABCDEF", "cde") = false
+func EndsWithIgnoreCase(str, suffix string) bool {
+	return endsWith(str, suffix, true)
+}
+
+// endsWith checks if a string ends with a specified suffix (optionally case insensitive).
+func endsWith(str, suffix string, ignoreCase bool) bool {
+	if str == "" || suffix == "" {
+		return suffix == ""
+	}
+
+	sufLen := RuneLen(suffix)
+	strLen := RuneLen(str)
+
+	if sufLen > strLen {
+		return false
+	}
+
+	strOffset := strLen - sufLen
+	return RegionMatches(str, ignoreCase, strOffset, suffix, 0, sufLen)
 }
 
 // endregion

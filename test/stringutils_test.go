@@ -1,6 +1,7 @@
 package test
 
 import (
+	"github.com/gotestyourself/gotestyourself/assert"
 	"testing"
 
 	"github.com/printfcoder/goutils/stringutils"
@@ -85,9 +86,7 @@ func TestIsAnyBlank(t *testing.T) {
 func TestTruncate(t *testing.T) {
 
 	out := stringutils.Truncate("012345678", 3)
-	if out != "012" {
-		t.Error(out)
-	}
+	assert.Assert(t, out == "012", out)
 
 	out = stringutils.Truncate("012345678", 9)
 	if out != "012345678" {
@@ -895,7 +894,7 @@ func TestStartsWith(t *testing.T) {
 	}
 
 	out = stringutils.StartsWith("abcdef", "")
-	if out != false {
+	if out != true {
 		t.Error(out)
 	}
 
@@ -908,6 +907,12 @@ func TestStartsWith(t *testing.T) {
 	if out != false {
 		t.Error(out)
 	}
+
+	out = stringutils.StartsWith("中国汉字ABCDEF", "中国汉字")
+	if out != true {
+		t.Error(out)
+	}
+
 }
 
 func TestJoin(t *testing.T) {
@@ -949,6 +954,11 @@ func TestDeleteWhitespace(t *testing.T) {
 	if out != "abc" {
 		t.Error(out)
 	}
+
+	out = stringutils.DeleteWhitespace("   中国  汉 字  ")
+	if out != "中国汉字" {
+		t.Error(out)
+	}
 }
 
 func TestRemoveStart(t *testing.T) {
@@ -974,6 +984,11 @@ func TestRemoveStart(t *testing.T) {
 	}
 
 	out = stringutils.RemoveStart("abc", "")
+	if out != "abc" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveStart("中国汉字abc", "中国汉字")
 	if out != "abc" {
 		t.Error(out)
 	}
@@ -1008,6 +1023,144 @@ func TestRemoveStartIgnoreCase(t *testing.T) {
 
 	out = stringutils.RemoveStartIgnoreCase("abc", "")
 	if out != "abc" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveStartIgnoreCase("中国汉字abc", "中国汉字")
+	if out != "abc" {
+		t.Error(out)
+	}
+
+}
+
+func TestEndsWith(t *testing.T) {
+
+	out := stringutils.EndsWith("", "def")
+	if out != false {
+		t.Error(out)
+	}
+
+	out = stringutils.EndsWith("abcdef", "def")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.EndsWith("ABCDEF", "def")
+	if out != false {
+		t.Error(out)
+	}
+
+	out = stringutils.EndsWith("ABCDEF", "cde")
+	if out != false {
+		t.Error(out)
+	}
+
+	out = stringutils.EndsWith("ABCDEF", "")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.EndsWith("ABCDEF中国汉字", "中国汉字")
+	if out != true {
+		t.Error(out)
+	}
+}
+
+func TestEndsWithIgnoreCase(t *testing.T) {
+
+	out := stringutils.EndsWithIgnoreCase("", "def")
+	if out != false {
+		t.Error(out)
+	}
+
+	out = stringutils.EndsWithIgnoreCase("abcdef", "")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.EndsWithIgnoreCase("abcdef", "def")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.EndsWithIgnoreCase("ABCDEF", "def")
+	if out != true {
+		t.Error(out)
+	}
+
+	out = stringutils.EndsWithIgnoreCase("ABCDEF", "cde")
+	if out != false {
+		t.Error(out)
+	}
+}
+
+func TestRemoveEnd(t *testing.T) {
+
+	out := stringutils.RemoveEnd("", "def")
+	if out != "" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveEnd("www.domain.com", ".com.")
+	if out != "www.domain.com" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveEnd("www.domain.com", ".com")
+	if out != "www.domain" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveEnd("www.domain.com", "domain")
+	if out != "www.domain.com" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveEnd("abc", "")
+	if out != "abc" {
+		t.Error(out)
+	}
+}
+
+func TestRemoveEndIgnoreCase(t *testing.T) {
+
+	out := stringutils.RemoveEndIgnoreCase("", "def")
+	if out != "" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveEndIgnoreCase("www.domain.com", ".com.")
+	if out != "www.domain.com" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveEndIgnoreCase("www.domain.com", ".com")
+	if out != "www.domain" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveEndIgnoreCase("www.domain.com", "domain")
+	if out != "www.domain.com" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveEndIgnoreCase("abc", "")
+	if out != "abc" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveEndIgnoreCase("www.domain.com", ".COM")
+	if out != "www.domain" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveEndIgnoreCase("www.domain.COM", ".com")
+	if out != "www.domain" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveEndIgnoreCase("www.domain.中国汉字", ".中国汉字")
+	if out != "www.domain" {
 		t.Error(out)
 	}
 }
