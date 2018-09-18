@@ -910,10 +910,6 @@ func TestStartsWith(t *testing.T) {
 	}
 }
 
-// stringutils.Join([], *)                 = ""
-// stringutils.Join(nil, *)             = ""
-// stringutils.Join([1, 2, 3], ';')  = "1;2;3"
-// stringutils.Join([1, 2, 3], "") = "123"
 func TestJoin(t *testing.T) {
 
 	out := stringutils.Join([]string{}, "")
@@ -933,6 +929,24 @@ func TestJoin(t *testing.T) {
 
 	out = stringutils.Join([]string{"1", "2", "3"}, "")
 	if out != "123" {
+		t.Error(out)
+	}
+}
+
+func TestDeleteWhitespace(t *testing.T) {
+
+	out := stringutils.DeleteWhitespace("")
+	if out != "" {
+		t.Error(out)
+	}
+
+	out = stringutils.DeleteWhitespace("abc")
+	if out != "abc" {
+		t.Error(out)
+	}
+
+	out = stringutils.DeleteWhitespace("   ab  c  ")
+	if out != "abc" {
 		t.Error(out)
 	}
 }
