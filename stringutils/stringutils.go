@@ -116,7 +116,7 @@ func StringsHasOneEmpty(in ...string) bool {
 
 //  endregion
 
-// region trim
+// region Truncate
 
 // Truncate truncates a String
 func Truncate(str string, maxWidth int) string {
@@ -1026,6 +1026,16 @@ func FromBase64(in string) (str string, err error) {
 }
 
 // endregion base64
+
+/* region trim*/
+
+// TrimSpace returns a slice of the string s, with all leading
+// and trailing white space removed, as defined by Unicode.
+func TrimSpace(in string) string {
+	return strings.TrimSpace(in)
+}
+
+/* endregion */
 
 // IDArrayToSQLInString combiles id nums to a sql "in" clause string
 func IDArrayToSQLInString(in []int) string {
