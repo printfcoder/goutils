@@ -950,3 +950,64 @@ func TestDeleteWhitespace(t *testing.T) {
 		t.Error(out)
 	}
 }
+
+func TestRemoveStart(t *testing.T) {
+
+	out := stringutils.RemoveStart("", "asdfsafd")
+	if out != "" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveStart("www.domain.com", "www.")
+	if out != "domain.com" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveStart("domain.com", "www.")
+	if out != "domain.com" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveStart("www.domain.com", "domain")
+	if out != "www.domain.com" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveStart("abc", "")
+	if out != "abc" {
+		t.Error(out)
+	}
+}
+
+func TestRemoveStartIgnoreCase(t *testing.T) {
+
+	out := stringutils.RemoveStartIgnoreCase("", "asdfsafd")
+	if out != "" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveStartIgnoreCase("www.domain.com", "www.")
+	if out != "domain.com" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveStartIgnoreCase("www.domain.com", "WWW.")
+	if out != "domain.com" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveStartIgnoreCase("domain.com", "www.")
+	if out != "domain.com" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveStartIgnoreCase("www.domain.com", "domain")
+	if out != "www.domain.com" {
+		t.Error(out)
+	}
+
+	out = stringutils.RemoveStartIgnoreCase("abc", "")
+	if out != "abc" {
+		t.Error(out)
+	}
+}

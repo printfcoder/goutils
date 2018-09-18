@@ -1222,10 +1222,10 @@ func JoinBetween(in []string, separator string, startIndex, endIndex int) string
 // stringutils.StartsWith("abcdef", "abc") = true
 // stringutils.StartsWith("ABCDEF", "abc") = false
 func StartsWith(str, prefix string) bool {
-	return startsWith(str, prefix, false)
+	return StartsWithIgnoreCase(str, prefix, false)
 }
 
-func startsWith(str, prefix string, ignoreCase bool) bool {
+func StartsWithIgnoreCase(str, prefix string, ignoreCase bool) bool {
 	if str == "" || prefix == "" {
 		return str == "" && prefix == ""
 	}
@@ -1272,6 +1272,51 @@ func DeleteWhitespace(str string) string {
 		return str
 	}
 	return builder.String()
+}
+
+// RemoveStart removes a substring only if it is at the beginning of a source string,
+// otherwise returns the source string.
+// case when len(remove) is greater than len(str), then str will be returned
+// stringutils.RemoveStart("", *)        = ""
+// stringutils.RemoveStart("www.domain.com", "www.")   = "domain.com"
+// stringutils.RemoveStart("domain.com", "www.")       = "domain.com"
+// stringutils.RemoveStart("www.domain.com", "domain") = "www.domain.com"
+// stringutils.RemoveStart("abc", "")    = "abc"// s
+func RemoveStart(str, remove string) string {
+
+	if str == "" || remove == "" || len(remove) > len(str) {
+		return str
+	}
+
+	if StartsWith(str, remove) {
+		ret, _ := SubString(str, len(remove))
+		return ret
+	}
+
+	return str
+}
+
+// RemoveStartIgnoreCase cases insensitive removal of a substring if it is at the beginning of a source string,
+// otherwise returns the source string
+// case when len(remove) is greater than len(str), then str will be returned
+//
+// stringUtils.RemoveStartIgnoreCase("", *)        = ""
+// stringUtils.RemoveStartIgnoreCase("www.domain.com", "www.")   = "domain.com"
+// stringUtils.RemoveStartIgnoreCase("www.domain.com", "WWW.")   = "domain.com"
+// stringUtils.RemoveStartIgnoreCase("domain.com", "www.")       = "domain.com"
+// stringUtils.RemoveStartIgnoreCase("www.domain.com", "domain") = "www.domain.com"
+// stringUtils.RemoveStartIgnoreCase("abc", "")    = "abc"// s
+func RemoveStartIgnoreCase(str, remove string) string {
+	if str == "" || remove == "" || len(remove) > len(str) {
+		return str
+	}
+
+	if StartsWithIgnoreCase(str, remove, true) {
+		ret, _ := SubString(str, len(remove))
+		return ret
+	}
+
+	return str
 }
 
 // endregion
