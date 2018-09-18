@@ -1,6 +1,7 @@
 package stringutils
 
 import (
+	"bytes"
 	"encoding/base64"
 	"fmt"
 	"regexp"
@@ -1171,6 +1172,50 @@ func ToString(in interface{}) string {
 }
 
 // region startsWith
+
+// region join
+
+// Join joins the elements of the provided array into a single String containing the provided list of elements
+// stringutils.Join([], *)                 = ""
+// stringutils.Join(nil, *)             = ""
+// stringutils.Join([1, 2, 3], ';')  = "1;2;3"
+// stringutils.Join([1, 2, 3], "") = "123"
+func Join(in []string, separator string) string {
+	if in == nil {
+		return ""
+	}
+
+	return JoinBetween(in, separator, 0, len(in))
+}
+
+// JoinBetween joins the elements of the provided array into a single String containing the provided list of elements.
+// stringutils.JoinBetween([], *)              = ""
+// stringutils.JoinBetween(nil, *)             = ""
+// stringutils.JoinBetween([1, 2, 3], ';')  = "1;2;3"
+// stringutils.JoinBetween([1, 2, 3], "") = "123"
+func JoinBetween(in []string, separator string, startIndex, endIndex int) string {
+	if in == nil {
+		return ""
+	}
+
+	noOfItems := endIndex - startIndex
+
+	if noOfItems <= 0 {
+		return EMPTY
+	}
+
+	var buffer bytes.Buffer
+
+	for i := startIndex; i < endIndex; i++ {
+		if i > startIndex {
+			buffer.WriteString(separator)
+		}
+		buffer.WriteString(in[i])
+	}
+	return buffer.String()
+}
+
+// endregion
 
 // Check if a CharSequence starts with a specified prefix.
 // StringUtils.startsWith("", "")      = true

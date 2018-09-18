@@ -909,3 +909,30 @@ func TestStartsWith(t *testing.T) {
 		t.Error(out)
 	}
 }
+
+// stringutils.Join([], *)                 = ""
+// stringutils.Join(nil, *)             = ""
+// stringutils.Join([1, 2, 3], ';')  = "1;2;3"
+// stringutils.Join([1, 2, 3], "") = "123"
+func TestJoin(t *testing.T) {
+
+	out := stringutils.Join([]string{}, "")
+	if out != "" {
+		t.Error(out)
+	}
+
+	out = stringutils.Join(nil, "abc")
+	if out != "" {
+		t.Error(out)
+	}
+
+	out = stringutils.Join([]string{"1", "2", "3"}, ";")
+	if out != "1;2;3" {
+		t.Error(out)
+	}
+
+	out = stringutils.Join([]string{"1", "2", "3"}, "")
+	if out != "123" {
+		t.Error(out)
+	}
+}
