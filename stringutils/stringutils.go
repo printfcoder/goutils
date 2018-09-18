@@ -1,7 +1,6 @@
 package stringutils
 
 import (
-	"bytes"
 	"encoding/base64"
 	"fmt"
 	"regexp"
@@ -1202,15 +1201,15 @@ func JoinBetween(in []string, separator string, startIndex, endIndex int) string
 		return EMPTY
 	}
 
-	var buffer bytes.Buffer
+	var builder strings.Builder
 
 	for i := startIndex; i < endIndex; i++ {
 		if i > startIndex {
-			buffer.WriteString(separator)
+			builder.WriteString(separator)
 		}
-		buffer.WriteString(in[i])
+		builder.WriteString(in[i])
 	}
-	return buffer.String()
+	return builder.String()
 }
 
 // endregion
@@ -1238,8 +1237,41 @@ func startsWith(str, prefix string, ignoreCase bool) bool {
 
 // endregion
 
+// region split
+
 // Split slices s into all substrings separated by sep and returns a slice of
 // the substrings between those separators.
 func Split(str, sep string) []string {
 	return strings.Split(str, sep)
 }
+
+// endregion
+
+// region Delete
+
+// DeleteWhitespace deletes all whitespaces from a String
+// stringutils.DeleteWhitespace("")           = ""
+// stringutils.DeleteWhitespace("abc")        = "abc"
+// stringutils.DeleteWhitespace("   ab  c  ") = "abc"
+func DeleteWhitespace(str string) string {
+	if str == "" {
+		return ""
+	}
+
+	sz := len(str)
+	var builder strings.Builder
+
+	count := 0
+	for i := 0; i < sz; i++ {
+		charT, _ := CharAt(str, i)
+		if !IsWhitespace(charT) {
+			builder.WriteString(charT)
+		}
+	}
+	if count == sz {
+		return str
+	}
+	return builder.String()
+}
+
+// endregion
