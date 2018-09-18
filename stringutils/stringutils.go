@@ -1171,8 +1171,6 @@ func ToString(in interface{}) string {
 	return fmt.Sprintf("%v", in)
 }
 
-// region startsWith
-
 // region join
 
 // Join joins the elements of the provided array into a single String containing the provided list of elements
@@ -1217,12 +1215,13 @@ func JoinBetween(in []string, separator string, startIndex, endIndex int) string
 
 // endregion
 
-// Check if a CharSequence starts with a specified prefix.
-// StringUtils.startsWith("", "")      = true
-// StringUtils.startsWith("", "abc")     = false
-// StringUtils.startsWith("abcdef", "")  = false
-// StringUtils.startsWith("abcdef", "abc") = true
-// StringUtils.startsWith("ABCDEF", "abc") = false
+// region startWith
+// StartsWith checks if a CharSequence starts with a specified prefix.
+// stringutils.StartsWith("", "")      = true
+// stringutilu.StartsWith("", "abc")     = false
+// stringutilss.StartsWith("abcdef", "")  = false
+// stringutils.StartsWith("abcdef", "abc") = true
+// stringutils.StartsWith("ABCDEF", "abc") = false
 func StartsWith(str, prefix string) bool {
 	return startsWith(str, prefix, false)
 }
