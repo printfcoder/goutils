@@ -596,9 +596,8 @@ startSearchForLastChar:
 	{
 
 		for {
-
 			sI, _ := CharAt(source, i)
-			for i > min && sI != strLastChar {
+			for i >= min && sI != strLastChar {
 				i--
 				sI, _ = CharAt(source, i)
 			}
@@ -690,14 +689,15 @@ func OrdinalIndexOf(str, searchStr string, ordinal int, lastIndex bool) int {
 
 // LastIndexOf returns the index within this string of the last occurrence of the
 // specified substring, searching backward starting at the specified index.
-func LastIndexOf(cs, searchChar string, start int) int {
+// important: The search starts at the startPos and works backwards; matches starting after the start position are ignored.
+func LastIndexOf(cs, searchChar string, startPos int) int {
 	str2 := []rune(cs)
 	l1 := len(str2)
 
 	sub2 := []rune(searchChar)
 	l2 := len(sub2)
 
-	return lastIndexOf(cs, 0, l1, searchChar, 0, l2, start)
+	return lastIndexOf(cs, 0, l1, searchChar, 0, l2, startPos)
 }
 
 // IndexOfAnyBut searches a CharSequence to find the first index of any character not in the given set of characters.
@@ -1602,5 +1602,82 @@ func PrependIfMissing(str, prefix string, prefixes ...string) string {
 func PrependIfMissingIgnoreCase(str, prefix string, prefixes ...string) string {
 	return prependIfMissing(str, prefix, true, prefixes...)
 }
+
+// endregion
+
+//  Wrap wraps a String with another String.
+//  stringutils.Wrap("", *)           = ""
+//  stringutils.Wrap("ab", "x")       = "xabx"
+//  stringutils.Wrap("ab", "\"")      = "\"ab\""
+//  stringutils.Wrap("\"ab\"", "\"")  = "\"\"ab\"\""
+//  stringutils.Wrap("ab", "'")       = "'ab'"
+//  stringutils.Wrap("'abcd'", "'")   = "''abcd''"
+//  stringutils.Wrap("\"abcd\"", "'") = "'\"abcd\"'"
+//  stringutils.Wrap("'abcd'", "\"")  = "\"'abcd'\""
+func Wrap(str, wrapWith string) string {
+
+	if str == "" || wrapWith == "" {
+		return str
+	}
+
+	return wrapWith + str + wrapWith
+}
+
+// WrapIfMissing wraps a string with a string if that string is missing from the start or end of the given string.
+// stringutils.WrapIfMissing("", *)           = ""
+// stringutils.WrapIfMissing("ab", "x")       = "xabx"
+// stringutils.WrapIfMissing("ab", "\"")      = "\"ab\""
+// stringutils.WrapIfMissing("\"ab\"", "\"")  = "\"ab\""
+// stringutils.WrapIfMissing("ab", "'")       = "'ab'"
+// stringutils.WrapIfMissing("'abcd'", "'")   = "'abcd'"
+// stringutils.WrapIfMissing("\"abcd\"", "'") = "'\"abcd\"'"
+// stringutils.WrapIfMissing("'abcd'", "\"")  = "\"'abcd'\""
+// stringutils.WrapIfMissing("/", "/")  = "/"
+// stringutils.UrapIfMissing("a/b/c", "/")  = "/a/b/c/"
+// stringutils.WrapIfMissing("/a/b/c", "/")  = "/a/b/c/"
+// stringutils.WrapIfMissing("a/b/c/", "/")  = "/a/b/c/"
+func WrapIfMissing(str, wrapWith string) string {
+	if str == "" || wrapWith == "" {
+		return str
+	}
+
+	var builder strings.Builder
+	if !StartsWith(str, wrapWith) {
+		builder.WriteString(wrapWith)
+	}
+	builder.WriteString(str)
+	if !endsWith(str, wrapWith, false) {
+		builder.WriteString(wrapWith)
+	}
+	return builder.String()
+}
+
+// Unwrap unwraps a given string from anther string.
+
+// stringutils.Unwrap("\'abc\'", "\'")    = "abc"
+// stringutils.Unwrap("\"abc\"", "\"")    = "abc"
+// stringutils.Unwrap("AABabcBAA", "AA")  = "BabcB"
+// stringutils.Unwrap("A", "#")           = "A"
+// stringutils.Unwrap("#A", "#")          = "#A"
+// stringutils.Unwrap("A#", "#")          = "A#"
+func Unwrap(str, wrapToken string) string {
+	if str == "" || wrapToken == "" {
+		return str
+	}
+
+	if StartsWith(str, wrapToken) && endsWith(str, wrapToken, false) {
+		startIndex := IndexOf(str, wrapToken)
+		endIndex := LastIndexOf(str, wrapToken, RuneLen(str))
+		wrapLength := RuneLen(wrapToken)
+		if startIndex != -1 && endIndex != -1 {
+			ret, _ := SubStringBetween(str, startIndex+wrapLength, endIndex)
+			return ret
+		}
+	}
+
+	return str
+}
+
+// region wrap
 
 // endregion

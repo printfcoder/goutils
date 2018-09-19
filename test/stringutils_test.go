@@ -427,11 +427,6 @@ func TestIndexOfFromIndex(t *testing.T) {
 
 func TestOrdinalIndexOf(t *testing.T) {
 
-	// stringUtils.OrdinalIndexOf("abababab", "abab", 1) = 0
-	// stringUtils.OrdinalIndexOf("abababab", "abab", 2) = 2
-	// stringUtils.OrdinalIndexOf("abababab", "abab", 3) = 4
-	// stringUtils.OrdinalIndexOf("abababab", "abab", 4) = -1
-
 	out := stringutils.OrdinalIndexOf("abababab", "abab", 1, false)
 	if out != 0 {
 		t.Error(out)
@@ -1286,4 +1281,54 @@ func TestPrependIfMissingIgnoreCase(t *testing.T) {
 	assert.Assert(t, stringutils.PrependIfMissingIgnoreCase("mnoabc", "xyz", "mno") == "mnoabc")
 	assert.Assert(t, stringutils.PrependIfMissingIgnoreCase("XYZabc", "xyz", "mno") == "XYZabc")
 	assert.Assert(t, stringutils.PrependIfMissingIgnoreCase("MNOabc", "xyz", "mno") == "MNOabc")
+}
+
+func TestWrap(t *testing.T) {
+
+	assert.Assert(t, stringutils.Wrap("", "asdfasdf") == "")
+	assert.Assert(t, stringutils.Wrap("ab", "x") == "xabx")
+	assert.Assert(t, stringutils.Wrap("ab", "\"") == "\"ab\"")
+	assert.Assert(t, stringutils.Wrap("\"ab\"", "\"") == "\"\"ab\"\"")
+	assert.Assert(t, stringutils.Wrap("ab", "'") == "'ab'")
+	assert.Assert(t, stringutils.Wrap("'abcd'", "'") == "''abcd''")
+	assert.Assert(t, stringutils.Wrap("\"abcd\"", "'") == "'\"abcd\"'")
+	assert.Assert(t, stringutils.Wrap("'abcd'", "\"") == "\"'abcd'\"")
+}
+
+func TestWrapIfMissing(t *testing.T) {
+	assert.Assert(t, stringutils.WrapIfMissing("", "asdfasdf") == "")
+	assert.Assert(t, stringutils.WrapIfMissing("ab", "x") == "xabx")
+	assert.Assert(t, stringutils.WrapIfMissing("ab", "\"") == "\"ab\"")
+	assert.Assert(t, stringutils.WrapIfMissing("\"ab\"", "\"") == "\"ab\"")
+	assert.Assert(t, stringutils.WrapIfMissing("ab", "'") == "'ab'")
+	assert.Assert(t, stringutils.WrapIfMissing("'abcd'", "'") == "'abcd'")
+	assert.Assert(t, stringutils.WrapIfMissing("\"abcd\"", "'") == "'\"abcd\"'")
+	assert.Assert(t, stringutils.WrapIfMissing("'abcd'", "\"") == "\"'abcd'\"")
+	assert.Assert(t, stringutils.WrapIfMissing("/", "/") == "/")
+	assert.Assert(t, stringutils.WrapIfMissing("a/b/c", "/") == "/a/b/c/")
+	assert.Assert(t, stringutils.WrapIfMissing("/a/b/c", "/") == "/a/b/c/")
+	assert.Assert(t, stringutils.WrapIfMissing("a/b/c/", "/") == "/a/b/c/")
+}
+
+func TestLastIndexOf(t *testing.T) {
+	// assert.Assert(t, stringutils.LastIndexOf("aabaabaa", "a", 8) == 7)
+	assert.Assert(t, stringutils.LastIndexOf("aabaabaa", "b", 8) == 5)
+	assert.Assert(t, stringutils.LastIndexOf("aabaabaa", "ab", 8) == 4)
+	assert.Assert(t, stringutils.LastIndexOf("aabaabaa", "b", 9) == 5)
+	assert.Assert(t, stringutils.LastIndexOf("aabaabaa", "b", -1) == -1)
+	assert.Assert(t, stringutils.LastIndexOf("aabaabaa", "a", 0) == 0)
+	assert.Assert(t, stringutils.LastIndexOf("aabaabaa", "b", 0) == -1)
+	assert.Assert(t, stringutils.LastIndexOf("aabaabaa", "b", 1) == -1)
+	assert.Assert(t, stringutils.LastIndexOf("aabaabaa", "b", 2) == 2)
+	assert.Assert(t, stringutils.LastIndexOf("aabaabaa", "ba", 2) == 2)
+}
+
+func TestUnwrap(t *testing.T) {
+
+	assert.Assert(t, stringutils.Unwrap("'abc'", "'") == "abc")
+	assert.Assert(t, stringutils.Unwrap("\"abc\"", "\"") == "abc")
+	assert.Assert(t, stringutils.Unwrap("AABabcBAA", "AA") == "BabcB")
+	assert.Assert(t, stringutils.Unwrap("A", "#") == "A")
+	assert.Assert(t, stringutils.Unwrap("#A", "#") == "#A")
+	assert.Assert(t, stringutils.Unwrap("A#", "#") == "A#")
 }
