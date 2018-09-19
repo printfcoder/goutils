@@ -1164,3 +1164,51 @@ func TestRemoveEndIgnoreCase(t *testing.T) {
 		t.Error(out)
 	}
 }
+
+func TestEndsWithAny(t *testing.T) {
+
+	out := stringutils.EndsWithAny("")
+	assert.Assert(t, out == false)
+
+	out = stringutils.EndsWithAny("abcxyz", "")
+	assert.Assert(t, out == true)
+
+	out = stringutils.EndsWithAny("abcxyz", "xyz")
+	assert.Assert(t, out == true)
+
+	out = stringutils.EndsWithAny("abcxyz", "xyz", "abc")
+	assert.Assert(t, out == true)
+
+	out = stringutils.EndsWithAny("abcXYZ", "def", "XYZ")
+	assert.Assert(t, out == true)
+
+	out = stringutils.EndsWithAny("abcXYZ", "def", "xyz")
+	assert.Assert(t, out == false)
+
+	out = stringutils.EndsWithAny("abcx中国汉字yz", "def", "x中国汉字yz")
+	assert.Assert(t, out == true)
+}
+
+func TestEndsWithAnyIgnoreCase(t *testing.T) {
+
+	out := stringutils.EndsWithAnyIgnoreCase("")
+	assert.Assert(t, out == false)
+
+	out = stringutils.EndsWithAnyIgnoreCase("abcxyz", "")
+	assert.Assert(t, out == true)
+
+	out = stringutils.EndsWithAnyIgnoreCase("abcxyz", "xyz")
+	assert.Assert(t, out == true)
+
+	out = stringutils.EndsWithAnyIgnoreCase("abcxyz", "xyz", "abc")
+	assert.Assert(t, out == true)
+
+	out = stringutils.EndsWithAnyIgnoreCase("abcXYZ", "def", "XYZ")
+	assert.Assert(t, out == true)
+
+	out = stringutils.EndsWithAnyIgnoreCase("abcXYZ", "def", "xyz")
+	assert.Assert(t, out == true)
+
+	out = stringutils.EndsWithAnyIgnoreCase("abcx中国汉字yz", "def", "x中国汉字yz")
+	assert.Assert(t, out == true)
+}

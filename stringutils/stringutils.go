@@ -1157,7 +1157,7 @@ func RuneLen(str string) int {
 // StringChinesePhoneNumOrEmail phone all email
 // if return 2 means 'in' is a phone num, 1 means it is a email address
 func StringChinesePhoneNumOrEmail(in string) int {
-	reg, _ := regexp.Compile(`^1[34578]\d{9}$`)
+	reg, _ := regexp.Compile(`^1[345789]\d{9}$`)
 	if reg.MatchString(in) {
 		return 2
 	}
@@ -1405,6 +1405,46 @@ func EndsWith(str, suffix string) bool {
 // stringutils.EndsWithIgnoreCase("ABCDEF", "cde") = false
 func EndsWithIgnoreCase(str, suffix string) bool {
 	return endsWith(str, suffix, true)
+}
+
+// EndsWithAny checks if a CharSequence ends with any of the provided case-sensitive suffixes
+// stringutils.EndsWithAny("")      = false
+// stringutils.EndsWithAny("abcxyz", "") = true
+// stringutils.EndsWithAny("abcxyz", "xyz") = true
+// stringutils.EndsWithAny("abcxyz", "xyz", "abc") = true
+// stringutils.EndsWithAny("abcXYZ", "def", "XYZ") = true
+// stringutils.EndsWithAny("abcXYZ", "def", "xyz") = false
+func EndsWithAny(sequence string, searchStrings ...string) bool {
+	if sequence == "" || len(searchStrings) == 0 {
+		return false
+	}
+
+	for _, v := range searchStrings {
+		if endsWith(sequence, v, false) {
+			return true
+		}
+	}
+	return false
+}
+
+// EndsWithAny checks if a CharSequence ends with any of the provided case-insensitive suffixes
+// stringutils.EndsWithAny("")      = false
+// stringutils.EndsWithAny("abcxyz", "") = true
+// stringutils.EndsWithAny("abcxyz", "xyz") = true
+// stringutils.EndsWithAny("abcxyz", "xyz", "abc") = true
+// stringutils.EndsWithAny("abcXYZ", "def", "XYZ") = true
+// stringutils.EndsWithAny("abcXYZ", "def", "xyz") = true
+func EndsWithAnyIgnoreCase(sequence string, searchStrings ...string) bool {
+	if sequence == "" || len(searchStrings) == 0 {
+		return false
+	}
+
+	for _, v := range searchStrings {
+		if endsWith(sequence, v, true) {
+			return true
+		}
+	}
+	return false
 }
 
 // endsWith checks if a string ends with a specified suffix (optionally case insensitive).
