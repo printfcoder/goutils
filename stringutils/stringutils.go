@@ -1465,3 +1465,31 @@ func endsWith(str, suffix string, ignoreCase bool) bool {
 }
 
 // endregion
+
+// region append
+
+// AppendIfMissing appends the suffix to the end of the string if the string does not
+// already end with the suffix which in suffixes
+// A new String if suffix was appended, the same string otherwise.
+//
+// str The string.
+// suffix The suffix to append to the end of the string.
+// ignoreCase Indicates whether the compare should ignore case.
+// suffixes Additional suffixes that are valid terminators (optional).
+func AppendIfMissing(str string, suffix string, ignoreCase bool, suffixes ...string) string {
+	if str == "" || len(suffix) == 0 || endsWith(str, suffix, ignoreCase) {
+		return str
+	}
+
+	if len(suffixes) > 0 {
+		for _, s := range suffixes {
+			if endsWith(str, s, ignoreCase) {
+				return str
+			}
+		}
+	}
+
+	return str + suffix
+}
+
+// endregion

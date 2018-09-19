@@ -1212,3 +1212,19 @@ func TestEndsWithAnyIgnoreCase(t *testing.T) {
 	out = stringutils.EndsWithAnyIgnoreCase("abcx中国汉字yz", "def", "x中国汉字yz")
 	assert.Assert(t, out == true)
 }
+
+func TestAppendIfMissing(t *testing.T) {
+
+	out := stringutils.AppendIfMissing("abcxyz", "new", false, "x", "y")
+	assert.Assert(t, out == "abcxyznew")
+
+	out = stringutils.AppendIfMissing("sdfasfasdfd", "new", false, "x", "y")
+	assert.Assert(t, out == "sdfasfasdfdnew")
+
+	out = stringutils.AppendIfMissing("sdfasfasdfx", "new", false, "X", "y")
+	assert.Assert(t, out == "sdfasfasdfxnew")
+
+	out = stringutils.AppendIfMissing("sdfasfasdfx", "new", true, "X", "y")
+	assert.Assert(t, out == "sdfasfasdfx")
+
+}
