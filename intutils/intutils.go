@@ -23,3 +23,13 @@ func IntArrayToStringArray(in []int) []string {
 	}
 	return ret
 }
+
+// ToFloat32 converts a int num to a float32 num
+func ToFloat32(in int) float32 {
+	return float32(in)
+}
+
+// ToFloat64 converts a int num to a float64 num
+func ToFloat64(in int) float64 {
+	return float64(in)
+}
