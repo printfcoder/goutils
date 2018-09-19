@@ -1261,3 +1261,29 @@ func TestAppendIfMissingIgnoreCase(t *testing.T) {
 	assert.Assert(t, stringutils.AppendIfMissingIgnoreCase("abcXYZ", "xyz", "mno") == "abcXYZ")
 	assert.Assert(t, stringutils.AppendIfMissingIgnoreCase("abcMNO", "xyz", "mno") == "abcMNO")
 }
+
+func TestPrependIfMissing(t *testing.T) {
+	assert.Assert(t, stringutils.PrependIfMissing("", "xyz") == "xyz")
+	assert.Assert(t, stringutils.PrependIfMissing("abc", "xyz") == "xyzabc")
+	assert.Assert(t, stringutils.PrependIfMissing("xyzabc", "xyz") == "xyzabc")
+	assert.Assert(t, stringutils.PrependIfMissing("XYZabc", "xyz") == "xyzXYZabc")
+	assert.Assert(t, stringutils.PrependIfMissing("abc", "xyz", "") == "abc")
+	assert.Assert(t, stringutils.PrependIfMissing("abc", "xyz", "mno") == "xyzabc")
+	assert.Assert(t, stringutils.PrependIfMissing("xyzabc", "xyz", "mno") == "xyzabc")
+	assert.Assert(t, stringutils.PrependIfMissing("mnoabc", "xyz", "mno") == "mnoabc")
+	assert.Assert(t, stringutils.PrependIfMissing("XYZabc", "xyz", "mno") == "xyzXYZabc")
+	assert.Assert(t, stringutils.PrependIfMissing("MNOabc", "xyz", "mno") == "xyzMNOabc")
+}
+
+func TestPrependIfMissingIgnoreCase(t *testing.T) {
+	assert.Assert(t, stringutils.PrependIfMissingIgnoreCase("", "xyz") == "xyz")
+	assert.Assert(t, stringutils.PrependIfMissingIgnoreCase("abc", "xyz") == "xyzabc")
+	assert.Assert(t, stringutils.PrependIfMissingIgnoreCase("xyzabc", "xyz") == "xyzabc")
+	assert.Assert(t, stringutils.PrependIfMissingIgnoreCase("XYZabc", "xyz") == "XYZabc")
+	assert.Assert(t, stringutils.PrependIfMissingIgnoreCase("abc", "xyz", "") == "abc")
+	assert.Assert(t, stringutils.PrependIfMissingIgnoreCase("abc", "xyz", "mno") == "xyzabc")
+	assert.Assert(t, stringutils.PrependIfMissingIgnoreCase("xyzabc", "xyz", "mno") == "xyzabc")
+	assert.Assert(t, stringutils.PrependIfMissingIgnoreCase("mnoabc", "xyz", "mno") == "mnoabc")
+	assert.Assert(t, stringutils.PrependIfMissingIgnoreCase("XYZabc", "xyz", "mno") == "XYZabc")
+	assert.Assert(t, stringutils.PrependIfMissingIgnoreCase("MNOabc", "xyz", "mno") == "MNOabc")
+}

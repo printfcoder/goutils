@@ -1476,7 +1476,7 @@ func endsWith(str, suffix string, ignoreCase bool) bool {
 // suffix The suffix to append to the end of the string.
 // ignoreCase Indicates whether the compare should ignore case.
 // suffixes Additional suffixes that are valid terminators (optional).
-func appendIfMissing(str string, suffix string, ignoreCase bool, suffixes ...string) string {
+func appendIfMissing(str, suffix string, ignoreCase bool, suffixes ...string) string {
 	if len(suffix) == 0 || endsWith(str, suffix, ignoreCase) {
 		return str
 	}
@@ -1505,7 +1505,7 @@ func appendIfMissing(str string, suffix string, ignoreCase bool, suffixes ...str
 // stringutils.AppendIfMissing("abcmno", "xyz", "mno") = "abcmno"
 // stringutils.AppendIfMissing("abcXYZ", "xyz", "mno") = "abcXYZxyz"
 // stringutils.AppendIfMissing("abcMNO", "xyz", "mno") = "abcMNOxyz"
-func AppendIfMissing(str string, suffix string, suffixes ...string) string {
+func AppendIfMissing(str, suffix string, suffixes ...string) string {
 	return appendIfMissing(str, suffix, false, suffixes...)
 }
 
@@ -1522,8 +1522,85 @@ func AppendIfMissing(str string, suffix string, suffixes ...string) string {
 //  stringutils.AppendIfMissingIgnoreCase("abcmno", "xyz", "mno") = "abcmno"
 //  stringutils.AppendIfMissingIgnoreCase("abcXYZ", "xyz", "mno") = "abcXYZ"
 //  stringutils.AppendIfMissingIgnoreCase("abcMNO", "xyz", "mno") = "abcMNO"
-func AppendIfMissingIgnoreCase(str string, suffix string, suffixes ...string) string {
+func AppendIfMissingIgnoreCase(str, suffix string, suffixes ...string) string {
 	return appendIfMissing(str, suffix, true, suffixes...)
+}
+
+// endregion
+
+// region prepend
+
+// prependIfMissing prepends the prefix to the start of the string if the string does not
+// already start with any of the prefixes.
+//
+// return A new String if prefix was prepended, the same string otherwise.
+//
+// str The string.
+// prefix The prefix to prepend to the start of the string.
+// ignoreCase Indicates whether the compare should ignore case.
+// prefixes Additional prefixes that are valid (optional).
+func prependIfMissing(str, prefix string, ignoreCase bool, prefixes ...string) string {
+	if prefix == "" || StartsWithIgnoreCase(str, prefix, ignoreCase) {
+		return str
+	}
+
+	if len(prefixes) > 0 {
+
+		for _, s := range prefixes {
+			if StartsWithIgnoreCase(str, s, ignoreCase) {
+				return str
+			}
+		}
+
+	}
+	return prefix + str
+}
+
+// prependIfMissing Prepends the prefix to the start of the string if the string does not
+// already start with any of the prefixes.
+//
+// A new String if prefix was prepended, the same string otherwise.
+
+// stringutils.PrependIfMissing("", "xyz") = "xyz"
+// stringutils.PrependIfMissing("abc", "xyz") = "xyzabc"
+// stringutils.PrependIfMissing("xyzabc", "xyz") = "xyzabc"
+// stringutils.PrependIfMissing("XYZabc", "xyz") = "xyzXYZabc"
+// stringutils.PrependIfMissing("abc", "xyz", "") = "abc"
+// stringutils.PrependIfMissing("abc", "xyz", "mno") = "xyzabc"
+// stringutils.PrependIfMissing("xyzabc", "xyz", "mno") = "xyzabc"
+// stringutils.PrependIfMissing("mnoabc", "xyz", "mno") = "mnoabc"
+// stringutils.PrependIfMissing("XYZabc", "xyz", "mno") = "xyzXYZabc"
+// stringutils.PrependIfMissing("MNOabc", "xyz", "mno") = "xyzMNOabc"
+
+// str The string.
+// prefix The prefix to prepend to the start of the string.
+// prefixes Additional prefixes that are valid.
+func PrependIfMissing(str, prefix string, prefixes ...string) string {
+	return prependIfMissing(str, prefix, false, prefixes...)
+}
+
+/**
+ * PrependIfMissingIgnoreCase prepends the prefix to the start of the string if the string does not
+ * already start, case insensitive, with any of the prefixes.
+ *
+ * stringutils.PrependIfMissingIgnoreCase("", "xyz") = "xyz"
+ * stringutils.PrependIfMissingIgnoreCase("abc", "xyz") = "xyzabc"
+ * stringutils.PrependIfMissingIgnoreCase("xyzabc", "xyz") = "xyzabc"
+ * stringutils.PrependIfMissingIgnoreCase("XYZabc", "xyz") = "XYZabc"
+ * stringutils.PrependIfMissingIgnoreCase("abc", "xyz", "") = "abc"
+ * stringutils.PrependIfMissingIgnoreCase("abc", "xyz", "mno") = "xyzabc"
+ * stringutils.PrependIfMissingIgnoreCase("xyzabc", "xyz", "mno") = "xyzabc"
+ * stringutils.PrependIfMissingIgnoreCase("mnoabc", "xyz", "mno") = "mnoabc"
+ * stringutils.PrependIfMissingIgnoreCase("XYZabc", "xyz", "mno") = "XYZabc"
+ * stringutils.PrependIfMissingIgnoreCase("MNOabc", "xyz", "mno") = "MNOabc"
+ * str The string.
+ * prefix The prefix to prepend to the start of the string.
+ * prefixes Additional prefixes that are valid (optional).
+ *
+ * A new String if prefix was prepended, the same string otherwise.
+ */
+func PrependIfMissingIgnoreCase(str, prefix string, prefixes ...string) string {
+	return prependIfMissing(str, prefix, true, prefixes...)
 }
 
 // endregion
