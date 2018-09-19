@@ -1468,7 +1468,7 @@ func endsWith(str, suffix string, ignoreCase bool) bool {
 
 // region append
 
-// AppendIfMissing appends the suffix to the end of the string if the string does not
+// appendIfMissing appends the suffix to the end of the string if the string does not
 // already end with the suffix which in suffixes
 // A new String if suffix was appended, the same string otherwise.
 //
@@ -1476,8 +1476,8 @@ func endsWith(str, suffix string, ignoreCase bool) bool {
 // suffix The suffix to append to the end of the string.
 // ignoreCase Indicates whether the compare should ignore case.
 // suffixes Additional suffixes that are valid terminators (optional).
-func AppendIfMissing(str string, suffix string, ignoreCase bool, suffixes ...string) string {
-	if str == "" || len(suffix) == 0 || endsWith(str, suffix, ignoreCase) {
+func appendIfMissing(str string, suffix string, ignoreCase bool, suffixes ...string) string {
+	if len(suffix) == 0 || endsWith(str, suffix, ignoreCase) {
 		return str
 	}
 
@@ -1490,6 +1490,40 @@ func AppendIfMissing(str string, suffix string, ignoreCase bool, suffixes ...str
 	}
 
 	return str + suffix
+}
+
+// Appends the suffix to the end of the string if the string does not
+// already end with any of the suffixes.
+// stringutils.AppendIfMissing("abc", "") = "abc"
+// stringutils.AppendIfMissing("", "xyz") = "xyz"
+// stringutils.AppendIfMissing("abc", "xyz") = "abcxyz"
+// stringutils.AppendIfMissing("abcxyz", "xyz") = "abcxyz"
+// stringutils.AppendIfMissing("abcXYZ", "xyz") = "abcXYZxyz"
+// stringutils.AppendIfMissing("abc", "xyz", "") = "abc"
+// stringutils.AppendIfMissing("abc", "xyz", "mno") = "abcxyz"
+// stringutils.AppendIfMissing("abcxyz", "xyz", "mno") = "abcxyz"
+// stringutils.AppendIfMissing("abcmno", "xyz", "mno") = "abcmno"
+// stringutils.AppendIfMissing("abcXYZ", "xyz", "mno") = "abcXYZxyz"
+// stringutils.AppendIfMissing("abcMNO", "xyz", "mno") = "abcMNOxyz"
+func AppendIfMissing(str string, suffix string, suffixes ...string) string {
+	return appendIfMissing(str, suffix, false, suffixes...)
+}
+
+//  Appends the suffix to the end of the string if the string does not
+//  already end, case insensitive, with any of the suffixes.
+//
+//  stringutils.AppendIfMissingIgnoreCase("", "xyz") = "xyz"
+//  stringutils.AppendIfMissingIgnoreCase("abc", "xyz") = "abcxyz"
+//  stringutils.AppendIfMissingIgnoreCase("abcxyz", "xyz") = "abcxyz"
+//  stringutils.AppendIfMissingIgnoreCase("abcXYZ", "xyz") = "abcXYZ"
+//  stringutils.AppendIfMissingIgnoreCase("abc", "xyz", "") = "abc"
+//  stringutils.AppendIfMissingIgnoreCase("abc", "xyz", "mno") = "abcxyz"
+//  stringutils.AppendIfMissingIgnoreCase("abcxyz", "xyz", "mno") = "abcxyz"
+//  stringutils.AppendIfMissingIgnoreCase("abcmno", "xyz", "mno") = "abcmno"
+//  stringutils.AppendIfMissingIgnoreCase("abcXYZ", "xyz", "mno") = "abcXYZ"
+//  stringutils.AppendIfMissingIgnoreCase("abcMNO", "xyz", "mno") = "abcMNO"
+func AppendIfMissingIgnoreCase(str string, suffix string, suffixes ...string) string {
+	return appendIfMissing(str, suffix, true, suffixes...)
 }
 
 // endregion

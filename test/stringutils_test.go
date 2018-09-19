@@ -1215,16 +1215,49 @@ func TestEndsWithAnyIgnoreCase(t *testing.T) {
 
 func TestAppendIfMissing(t *testing.T) {
 
-	out := stringutils.AppendIfMissing("abcxyz", "new", false, "x", "y")
-	assert.Assert(t, out == "abcxyznew")
+	out := stringutils.AppendIfMissing("abc", "")
+	assert.Assert(t, out == "abc")
 
-	out = stringutils.AppendIfMissing("sdfasfasdfd", "new", false, "x", "y")
-	assert.Assert(t, out == "sdfasfasdfdnew")
+	out = stringutils.AppendIfMissing("", "xyz")
+	assert.Assert(t, out == "xyz")
 
-	out = stringutils.AppendIfMissing("sdfasfasdfx", "new", false, "X", "y")
-	assert.Assert(t, out == "sdfasfasdfxnew")
+	out = stringutils.AppendIfMissing("abc", "xyz")
+	assert.Assert(t, out == "abcxyz")
 
-	out = stringutils.AppendIfMissing("sdfasfasdfx", "new", true, "X", "y")
-	assert.Assert(t, out == "sdfasfasdfx")
+	out = stringutils.AppendIfMissing("abcxyz", "xyz")
+	assert.Assert(t, out == "abcxyz")
 
+	out = stringutils.AppendIfMissing("abcXYZ", "xyz")
+	assert.Assert(t, out == "abcXYZxyz")
+
+	out = stringutils.AppendIfMissing("abc", "xyz", "")
+	assert.Assert(t, out == "abc")
+
+	out = stringutils.AppendIfMissing("abc", "xyz", "mno")
+	assert.Assert(t, out == "abcxyz")
+
+	out = stringutils.AppendIfMissing("abcxyz", "xyz", "mno")
+	assert.Assert(t, out == "abcxyz")
+
+	out = stringutils.AppendIfMissing("abcmno", "xyz", "mno")
+	assert.Assert(t, out == "abcmno")
+
+	out = stringutils.AppendIfMissing("abcXYZ", "xyz", "mno")
+	assert.Assert(t, out == "abcXYZxyz")
+
+	out = stringutils.AppendIfMissing("abcMNO", "xyz", "mno")
+	assert.Assert(t, out == "abcMNOxyz")
+}
+
+func TestAppendIfMissingIgnoreCase(t *testing.T) {
+	assert.Assert(t, stringutils.AppendIfMissingIgnoreCase("", "xyz") == "xyz")
+	assert.Assert(t, stringutils.AppendIfMissingIgnoreCase("abc", "xyz") == "abcxyz")
+	assert.Assert(t, stringutils.AppendIfMissingIgnoreCase("abcxyz", "xyz") == "abcxyz")
+	assert.Assert(t, stringutils.AppendIfMissingIgnoreCase("abcXYZ", "xyz") == "abcXYZ")
+	assert.Assert(t, stringutils.AppendIfMissingIgnoreCase("abc", "xyz", "") == "abc")
+	assert.Assert(t, stringutils.AppendIfMissingIgnoreCase("abc", "xyz", "mno") == "abcxyz")
+	assert.Assert(t, stringutils.AppendIfMissingIgnoreCase("abcxyz", "xyz", "mno") == "abcxyz")
+	assert.Assert(t, stringutils.AppendIfMissingIgnoreCase("abcmno", "xyz", "mno") == "abcmno")
+	assert.Assert(t, stringutils.AppendIfMissingIgnoreCase("abcXYZ", "xyz", "mno") == "abcXYZ")
+	assert.Assert(t, stringutils.AppendIfMissingIgnoreCase("abcMNO", "xyz", "mno") == "abcMNO")
 }
