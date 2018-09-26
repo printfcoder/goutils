@@ -1,8 +1,6 @@
-package crypto
+package cryptoutils
 
-import (
-	"golang.org/x/crypto/bcrypt"
-)
+import "golang.org/x/crypto/bcrypt"
 
 // NewPwd creates a new pwd with salt
 func NewPwd(plainPWD string) (pwd string, err error) {
