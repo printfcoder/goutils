@@ -1,6 +1,7 @@
 package intutils
 
 import (
+	"math"
 	"math/rand"
 	"strconv"
 	"time"
@@ -13,6 +14,30 @@ func RandInt(min, max int) int {
 		return max
 	}
 	return r.Intn(max-min) + min
+}
+
+// RandIntWithDateAsPrefix rand num between min and max which take date as prefix
+func RandIntWithDateAsPrefix(min, max int) uint64 {
+	suf := RandInt(min, max)
+	return uint64(GetNowDate()*int(math.Pow(10, float64(len(strconv.Itoa(suf))))) + suf)
+}
+
+// GetNowDate return number formatted `yyyyMMdd` of now
+// eg. 2018-10-28 00.00.01 -> 20181028
+func GetNowDate() int {
+
+	now := time.Now()
+	year := now.Year()
+	month := int(now.Month())
+	day := now.Day()
+
+	if month > 9 {
+		year *= int(math.Pow(10, float64(len(strconv.Itoa(year)))))
+	} else {
+		year *= int(math.Pow(10, float64(len(strconv.Itoa(year)))+1))
+	}
+
+	return year + month*100 + day
 }
 
 // IntArrayToStringArray converts int an array to new string array
