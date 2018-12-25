@@ -1332,3 +1332,9 @@ func TestUnwrap(t *testing.T) {
 	assert.Assert(t, stringutils.Unwrap("#A", "#") == "#A")
 	assert.Assert(t, stringutils.Unwrap("A#", "#") == "A#")
 }
+
+func TestRand(t *testing.T) {
+
+	out := stringutils.Rand(8, stringutils.STR_RAND_KIND_ALL)
+	t.Log(out)
+}
